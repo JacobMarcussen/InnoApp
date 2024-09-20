@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     marginVertical: 10,
-    width: "95%",
+    width: "93%",
     // Shadow for iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 150,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },

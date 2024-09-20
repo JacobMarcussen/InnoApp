@@ -48,7 +48,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: "#EAEAEA" }}>
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen
@@ -63,6 +63,6 @@ export default function App() {
           />
         </Tab.Navigator>
       </NavigationContainer>
-    </>
+    </View>
   );
 }
