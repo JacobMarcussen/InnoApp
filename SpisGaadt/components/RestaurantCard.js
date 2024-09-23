@@ -5,23 +5,41 @@ import RestaurantInfo from "./RestaurantInfo";
 import RatingInfo from "./RatingInfo";
 import DeliveryInfo from "./DeliveryInfo";
 
-const RestaurantCard = () => {
+const RestaurantCard = ({
+  name,
+  cuisine,
+  image,
+  rating,
+  address,
+  postalcode,
+  city,
+  type,
+  priceclass,
+  waitlist,
+}) => {
   return (
     <View style={styles.card}>
       {/* Restaurant Image */}
-      <Image source={{ uri: "https://picsum.photos/500/300" }} style={styles.image} />
+      <Image source={{ uri: image }} style={styles.image} resizeMode="cover" />
 
       {/* Restaurant Badge */}
-      <RestaurantBadge text="0 KR. I LEVERINGSGEBYR" />
+      {/* If waitlist is available, show a badge */}
+      <RestaurantBadge text={waitlist ? "Venteliste tilgængelig" : ""} />
+
       <View style={styles.info}>
         {/* Restaurant Info */}
-        <RestaurantInfo title="Dinner Sushi" description="Sushi af friske råvarer & mere..." />
+        {/* Combine address, postal code, and city properly */}
+        <RestaurantInfo
+          title={name}
+          description={`${address || ""}, ${postalcode || ""} ${city || ""}`}
+        />
 
         {/* Rating and Pricing Info */}
-        <RatingInfo fee="0,00 kr." priceLevel="$$$$" rating="8,8" />
+        <RatingInfo fee="5 kr." priceLevel={priceclass} rating={rating || "8.8"} />
 
         {/* Delivery Time */}
-        <DeliveryInfo time="40-50 min." />
+        {/* Combine type and cuisine properly */}
+        <DeliveryInfo time={`${type || ""} • ${cuisine || ""}`} />
       </View>
     </View>
   );
@@ -29,17 +47,14 @@ const RestaurantCard = () => {
 
 const styles = StyleSheet.create({
   card: {
+    flex: 1,
     backgroundColor: "#fff",
     borderRadius: 10,
-    marginBottom: 20,
-    marginVertical: 10,
-    width: "93%",
-    // Shadow for iOS
+    width: "100%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    // Shadow for Android
     elevation: 5,
   },
   image: {

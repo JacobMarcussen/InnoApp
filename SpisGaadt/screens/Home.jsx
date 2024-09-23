@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "start",
     width: "100%",
+    backgroundColor: "#fff",
   },
   headline: {
     fontSize: 28,
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "start",
     width: "100%",
+    backgroundColor: "#fff",
   },
 });
 

@@ -1,68 +1,78 @@
 import { View } from "react-native";
-import { getApps, initializeApp } from "firebase/app";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "./screens/Home";
-
-const Notifications = () => {
-  return <View />;
-};
-
-const Profile = () => {
-  return <View />;
-};
+import Locations from "./screens/Locations";
+import LocationDetails from "./screens/LocationDetails"; // Screen for location details
 
 const Settings = () => {
   return <View />;
 };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC6HD7P-cAbiWaorxUt7V5CBzxwJdh1rU0",
-  authDomain: "spisgaadt-7af47.firebaseapp.com",
-  projectId: "spisgaadt-7af47",
-  storageBucket: "spisgaadt-7af47.appspot.com",
-  messagingSenderId: "41873558589",
-  appId: "1:41873558589:web:d5830a42ffa05ed579ae54",
-};
+// Stack Navigator for Locations
+const LocationsStack = createStackNavigator();
 
-if (getApps().length < 1) {
-  initializeApp(firebaseConfig);
-  console.log("Firebase On!");
-  // Initialize other firebase products here
+function LocationsStackScreen() {
+  return (
+    <LocationsStack.Navigator initialRouteName="Locations">
+      <LocationsStack.Screen
+        name="Locations"
+        component={Locations}
+        options={{ headerShown: false }}
+      />
+      <LocationsStack.Screen
+        name="LocationDetails"
+        component={LocationDetails}
+        options={{ headerShown: false }} // You can choose to show or hide the header
+      />
+    </LocationsStack.Navigator>
+  );
 }
 
+const Tab = createBottomTabNavigator();
+
 export default function App() {
-  const Stack = createStackNavigator();
-  const Tab = createBottomTabNavigator();
-
-  function StackNavigator() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Notifications" component={Notifications} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Settings" component={Settings} />
-      </Stack.Navigator>
-    );
-  }
-
   return (
-    <View style={{ flex: 1, backgroundColor: "#EAEAEA" }}>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen
-            name={"Home"}
-            component={Home}
-            options={{ tabBarIcon: () => <Ionicons name="home" size={20} />, headerShown: false }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={Settings}
-            options={{ tabBarIcon: () => <Ionicons name="settings" size={20} /> }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarStyle: {
+            backgroundColor: "#fff",
+            borderTopColor: "#EAEAEA",
+            paddingBottom: 25,
+            paddingTop: 10,
+          },
+          tabBarActiveTintColor: "#FF4500",
+          tabBarInactiveTintColor: "#B0B0B0",
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Udforsk") {
+              iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Lokationer") {
+              iconName = focused ? "location" : "location-outline";
+            } else if (route.name === "Settings") {
+              iconName = focused ? "settings" : "settings-outline";
+            }
+
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            paddingBottom: 0,
+          },
+        })}
+      >
+        {/* <Tab.Screen name="Udforsk" component={Home} options={{ headerShown: false }} /> */}
+        <Tab.Screen
+          name="Lokationer"
+          component={LocationsStackScreen} // Use the Stack for Locations
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
