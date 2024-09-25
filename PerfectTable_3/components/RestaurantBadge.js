@@ -11,7 +11,7 @@ const RestaurantBadge = ({ text }) => {
 
 const styles = StyleSheet.create({
   badge: {
-    backgroundColor: "red",
+    backgroundColor: "#008000",
     paddingVertical: 5,
     paddingHorizontal: 10,
     margin: 20,
