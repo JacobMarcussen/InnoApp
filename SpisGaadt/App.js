@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Home from "./screens/Home";
+import Search from "./screens/Search";
 import Locations from "./screens/Locations";
 import LocationDetails from "./screens/LocationDetails"; // Screen for location details
 
@@ -25,7 +25,7 @@ function LocationsStackScreen() {
       <LocationsStack.Screen
         name="LocationDetails"
         component={LocationDetails}
-        options={{ headerShown: false }} // You can choose to show or hide the header
+        options={{ headerShown: false }}
       />
     </LocationsStack.Navigator>
   );
@@ -51,8 +51,8 @@ export default function App() {
 
             if (route.name === "Udforsk") {
               iconName = focused ? "home" : "home-outline";
-            } else if (route.name === "Lokationer") {
-              iconName = focused ? "location" : "location-outline";
+            } else if (route.name === "Søg") {
+              iconName = focused ? "search" : "search-outline";
             } else if (route.name === "Settings") {
               iconName = focused ? "settings" : "settings-outline";
             }
@@ -65,12 +65,12 @@ export default function App() {
           },
         })}
       >
-        {/* <Tab.Screen name="Udforsk" component={Home} options={{ headerShown: false }} /> */}
         <Tab.Screen
-          name="Lokationer"
-          component={LocationsStackScreen} // Use the Stack for Locations
+          name="Udforsk"
+          component={LocationsStackScreen}
           options={{ headerShown: false }}
         />
+        <Tab.Screen name="Søg" component={Search} options={{ headerShown: false }} />
         <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
