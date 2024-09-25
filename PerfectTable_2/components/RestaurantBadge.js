@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const RestaurantBadge = ({ text }) => {
+const RestaurantBadge = ({ text, color }) => {
   return (
-    <View style={styles.badge}>
+    <View style={[styles.badge, { backgroundColor: color || "#000" }]}>
       <Text style={styles.badgeText}>{text}</Text>
     </View>
   );
@@ -11,10 +11,9 @@ const RestaurantBadge = ({ text }) => {
 
 const styles = StyleSheet.create({
   badge: {
-    backgroundColor: "red",
     paddingVertical: 5,
     paddingHorizontal: 10,
-    margin: 20,
+    margin: 7,
     borderRadius: 5,
     position: "absolute",
   },

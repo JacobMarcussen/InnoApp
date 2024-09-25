@@ -24,7 +24,7 @@ const RestaurantCard = ({
 
       {/* Restaurant Badge */}
       {/* If waitlist is available, show a badge */}
-      <RestaurantBadge text={waitlist ? "Venteliste tilgængelig" : ""} />
+      <RestaurantBadge text={waitlist ? "Venteliste tilgængelig" : "Ingen venteliste"} />
 
       <View style={styles.info}>
         {/* Restaurant Info */}

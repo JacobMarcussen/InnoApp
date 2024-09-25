@@ -5,7 +5,6 @@ const RestaurantInfo = ({ title, description }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
     </View>
   );
 };
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#000",
+    color: "#fff",
   },
   description: {
     color: "#737373",

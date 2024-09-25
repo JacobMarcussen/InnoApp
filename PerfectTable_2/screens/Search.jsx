@@ -8,34 +8,47 @@ import { database } from "../firebase";
 //   const locationData = [
 //     {
 //       id: "1",
-//       name: "Flammen",
-//       cuisine: "Kød",
-//       city: "København",
+//       name: "Firebase Test Restaurant",
+//       address: "Bredgade 1",
+//       postalcode: "1260",
+//       city: "København K",
+//       type: "Restaurant",
+//       cuisine: "Dansk",
+//       priceclass: "Mellem",
 //       waitlist: true,
 //     },
 //     {
 //       id: "2",
 //       name: "Noma",
+//       address: "Refshalevej 96",
+//       postalcode: "1432",
+//       city: "København K",
+//       type: "Restaurant",
 //       cuisine: "Nordic",
-//       city: "Aarhus",
+//       priceclass: "High",
 //       waitlist: false,
 //     },
 //     {
 //       id: "3",
 //       name: "Geranium",
+//       address: "Per Henrik Lings Allé 4",
+//       postalcode: "2100",
+//       city: "København Ø",
+//       type: "Restaurant",
 //       cuisine: "Fine Dining",
-//       city: "København",
+//       priceclass: "High",
 //       waitlist: true,
 //     },
 //   ];
 
 //   locationData.forEach((location) => {
 //     set(ref(database, `locations/${location.id}`), location)
-//       .then(() => console.log("Location added"))
+//       .then(() => console.log("Location added successfully!"))
 //       .catch((error) => console.error("Error adding location:", error));
 //   });
 // };
 
+// // Call this function to insert the sample data into the database
 // addSampleLocations();
 
 const Search = () => {

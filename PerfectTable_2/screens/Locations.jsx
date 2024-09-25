@@ -59,49 +59,10 @@ const Locations = () => {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.headline}>
-          Anbefalede <Text style={{ color: "#FF4500" }}>lokationer</Text>
+          Anbefalede <Text style={{ color: "#00BFFF" }}>lokationer</Text>
         </Text>
-        {locations.map((location) => (
-          <TouchableOpacity
-            key={location.id}
-            onPress={() =>
-              navigation.navigate("LocationDetails", {
-                name: location.name,
-                cuisine: location.cuisine,
-                address: location.address,
-                postalcode: location.postalcode,
-                city: location.city,
-                type: location.type,
-                priceclass: location.priceclass,
-                image: "https://picsum.photos/500/500", // Placeholder image
-              })
-            }
-            style={styles.cardWrapper}
-          >
-            <RestaurantCard
-              name={location.name}
-              cuisine={location.cuisine}
-              image="https://picsum.photos/500/500" // Placeholder image
-              rating="5"
-              address={location.address}
-              postalcode={location.postalcode}
-              city={location.city}
-              type={location.type}
-              priceclass={location.priceclass}
-              waitlist={location.waitlist}
-            />
-          </TouchableOpacity>
-        ))}
-        <StatusBar style="auto" />
-      </View>
-
-      <View style={styles.containerWaitlist}>
-        <Text style={styles.headline}>
-          Mulighed for <Text style={{ color: "#FF4500" }}>venteliste</Text>
-        </Text>
-        {locations
-          .filter((location) => location.waitlist)
-          .map((location) => (
+        <View style={styles.cardContainer}>
+          {locations.map((location) => (
             <TouchableOpacity
               key={location.id}
               onPress={() =>
@@ -132,6 +93,47 @@ const Locations = () => {
               />
             </TouchableOpacity>
           ))}
+        </View>
+        <StatusBar style="auto" />
+      </View>
+
+      <View style={styles.containerWaitlist}>
+        <Text style={styles.headline}>
+          Mulighed for <Text style={{ color: "#00BFFF" }}>venteliste</Text>
+        </Text>
+        {locations
+          .filter((location) => location.waitlist)
+          .map((location) => (
+            <TouchableOpacity
+              key={location.id}
+              onPress={() =>
+                navigation.navigate("LocationDetails", {
+                  name: location.name,
+                  cuisine: location.cuisine,
+                  address: location.address,
+                  postalcode: location.postalcode,
+                  city: location.city,
+                  type: location.type,
+                  priceclass: location.priceclass,
+                  image: "https://picsum.photos/500/500",
+                })
+              }
+              style={styles.cardWrapper}
+            >
+              <RestaurantCard
+                name={location.name}
+                cuisine={location.cuisine}
+                image="https://picsum.photos/500/500"
+                rating="5"
+                address={location.address}
+                postalcode={location.postalcode}
+                city={location.city}
+                type={location.type}
+                priceclass={location.priceclass}
+                waitlist={location.waitlist}
+              />
+            </TouchableOpacity>
+          ))}
         <StatusBar style="auto" />
       </View>
     </ScrollView>
@@ -139,22 +141,28 @@ const Locations = () => {
 };
 
 const styles = StyleSheet.create({
+  cardContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
   container: {
-    flex: 1,
     paddingTop: 85,
     alignItems: "center",
     justifyContent: "start",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#242424",
   },
   cardWrapper: {
-    flex: 1,
-    width: "100%",
+    width: "50%",
     paddingHorizontal: 15,
     paddingVertical: 10,
     paddingBottom: 20,
     justifyContent: "center",
     alignItems: "center",
+    height: 250,
   },
   headline: {
     fontSize: 28,
@@ -162,11 +170,12 @@ const styles = StyleSheet.create({
     textAlign: "start",
     width: "93%",
     marginBottom: 15,
+    color: "#fff",
   },
   containerWaitlist: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#242424",
     alignItems: "center",
     justifyContent: "start",
     width: "100%",
