@@ -6,6 +6,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Search from "./screens/Search";
 import Locations from "./screens/Locations";
 import LocationDetails from "./screens/LocationDetails"; // Screen for location details
+import CreateUser from "./screens/CreateUser"; // Adjust the path as necessary
+
 
 const Settings = () => {
   return <View />;
