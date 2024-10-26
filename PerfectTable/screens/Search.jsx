@@ -3,6 +3,7 @@ import { View, StyleSheet, StatusBar, Text, ScrollView, TouchableOpacity } from 
 import RestaurantCard from "../components/RestaurantCard";
 import { set, ref, get, child } from "firebase/database";
 import { database } from "../firebase";
+import { useNavigation } from "@react-navigation/native";
 
 // const addSampleLocations = () => {
 //   const locationData = [
@@ -37,11 +38,11 @@ import { database } from "../firebase";
 // };
 
 // addSampleLocations();
-
 const Search = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [waitlistFilter, setWaitlistFilter] = useState(false);
   const [locations, setLocations] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchLocations = () => {
@@ -72,9 +73,7 @@ const Search = () => {
     let filteredResults = locations;
 
     if (selectedCity) {
-      filteredResults = filteredResults.filter((location) =>
-        location.city.toLowerCase().includes(selectedCity.toLowerCase())
-      );
+      filteredResults = filteredResults.filter((location) => location.city.toLowerCase().includes(selectedCity.toLowerCase()));
     }
 
     if (waitlistFilter) {
@@ -93,36 +92,25 @@ const Search = () => {
 
         {/* City Filter Buttons */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.cityButton, selectedCity === "København" && styles.activeCityButton]}
-            onPress={() => setSelectedCity("København")}
-          >
+          <TouchableOpacity style={[styles.cityButton, selectedCity === "København" && styles.activeCityButton]} onPress={() => setSelectedCity("København")}>
             <Text style={styles.buttonText}>København</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.cityButton, selectedCity === "Aarhus" && styles.activeCityButton]}
-            onPress={() => setSelectedCity("Aarhus")}
-          >
+          <TouchableOpacity style={[styles.cityButton, selectedCity === "Aarhus" && styles.activeCityButton]} onPress={() => setSelectedCity("Aarhus")}>
             <Text style={styles.buttonText}>Aarhus</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.cityButton, selectedCity === "Odense" && styles.activeCityButton]}
-            onPress={() => setSelectedCity("Odense")}
-          >
+          <TouchableOpacity style={[styles.cityButton, selectedCity === "Odense" && styles.activeCityButton]} onPress={() => setSelectedCity("Odense")}>
             <Text style={styles.buttonText}>Odense</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.cityButton, selectedCity === "Kort" && styles.activeCityButton]} onPress={() => navigation.navigate("MapSearch")}>
+            <Text style={styles.buttonText}>Kort</Text>
           </TouchableOpacity>
         </View>
 
         {/* Waitlist Filter Toggle */}
-        <TouchableOpacity
-          style={[styles.button, waitlistFilter ? styles.activeButton : null]}
-          onPress={() => setWaitlistFilter(!waitlistFilter)}
-        >
-          <Text style={styles.buttonText}>
-            {waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}
-          </Text>
+        <TouchableOpacity style={[styles.button, waitlistFilter ? styles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
+          <Text style={styles.buttonText}>{waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}</Text>
         </TouchableOpacity>
 
         {/* Filtered Results */}
@@ -131,12 +119,12 @@ const Search = () => {
             key={location.id}
             name={location.name}
             cuisine={location.cuisine}
-            image="https://picsum.photos/500/500" // Placeholder image
-            rating="5" // Replace with actual rating if available
+            image='https://picsum.photos/500/500' // Placeholder image
+            rating='5' // Replace with actual rating if available
           />
         ))}
 
-        <StatusBar style="auto" />
+        <StatusBar style='auto' />
       </View>
     </ScrollView>
   );

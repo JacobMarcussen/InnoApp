@@ -5,7 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Search from "./screens/Search";
 import Locations from "./screens/Locations";
-import LocationDetails from "./screens/LocationDetails"; // Screen for location details
+import LocationDetails from "./screens/LocationDetails";
+import MapSearch from "./screens/MapSearch";
 import CreateUser from "./screens/CreateUser"; // Adjust the path as necessary
 
 
@@ -18,18 +19,22 @@ const LocationsStack = createStackNavigator();
 
 function LocationsStackScreen() {
   return (
-    <LocationsStack.Navigator initialRouteName="Locations">
-      <LocationsStack.Screen
-        name="Locations"
-        component={Locations}
-        options={{ headerShown: false }}
-      />
-      <LocationsStack.Screen
-        name="LocationDetails"
-        component={LocationDetails}
-        options={{ headerShown: false }}
-      />
+    <LocationsStack.Navigator initialRouteName='Locations'>
+      <LocationsStack.Screen name='Locations' component={Locations} options={{ headerShown: false }} />
+      <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
     </LocationsStack.Navigator>
+  );
+}
+
+const SearchStack = createStackNavigator();
+
+function SearchStackScreen() {
+  return (
+    <SearchStack.Navigator initialRouteName='Search'>
+      <SearchStack.Screen name='Search' component={Search} options={{ headerShown: false }} />
+      <SearchStack.Screen name='MapSearch' component={MapSearch} options={{ headerShown: false }} />
+      <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
+    </SearchStack.Navigator>
   );
 }
 
@@ -67,13 +72,9 @@ export default function App() {
           },
         })}
       >
-        <Tab.Screen
-          name="Udforsk"
-          component={LocationsStackScreen}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen name="Søg" component={Search} options={{ headerShown: false }} />
-        <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+        <Tab.Screen name='Udforsk' component={LocationsStackScreen} options={{ headerShown: false }} />
+        <Tab.Screen name='Søg' component={SearchStackScreen} options={{ headerShown: false }} />
+        <Tab.Screen name='Settings' component={Settings} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

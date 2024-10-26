@@ -73,7 +73,7 @@ const Locations = () => {
                 city: location.city,
                 type: location.type,
                 priceclass: location.priceclass,
-                image: "https://picsum.photos/500/500", // Placeholder image
+                image: "https://picsum.photos/500/500",
               })
             }
             style={styles.cardWrapper}
@@ -81,8 +81,8 @@ const Locations = () => {
             <RestaurantCard
               name={location.name}
               cuisine={location.cuisine}
-              image="https://picsum.photos/500/500" // Placeholder image
-              rating="5"
+              image='https://picsum.photos/500/500' // Placeholder image
+              rating='5'
               address={location.address}
               postalcode={location.postalcode}
               city={location.city}
@@ -92,7 +92,7 @@ const Locations = () => {
             />
           </TouchableOpacity>
         ))}
-        <StatusBar style="auto" />
+        <StatusBar style='auto' />
       </View>
 
       <View style={styles.containerWaitlist}>
@@ -121,8 +121,8 @@ const Locations = () => {
               <RestaurantCard
                 name={location.name}
                 cuisine={location.cuisine}
-                image="https://picsum.photos/500/500" // Placeholder image
-                rating="5"
+                image='https://picsum.photos/500/500' // Placeholder image
+                rating='5'
                 address={location.address}
                 postalcode={location.postalcode}
                 city={location.city}
@@ -132,7 +132,7 @@ const Locations = () => {
               />
             </TouchableOpacity>
           ))}
-        <StatusBar style="auto" />
+        <StatusBar style='auto' />
       </View>
     </ScrollView>
   );
