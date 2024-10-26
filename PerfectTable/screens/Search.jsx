@@ -4,6 +4,7 @@ import RestaurantCard from "../components/RestaurantCard";
 import { set, ref, get, child } from "firebase/database";
 import { database } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
+import GlobalStyles from "../GlobalStyles";
 
 // const addSampleLocations = () => {
 //   const locationData = [
@@ -85,43 +86,65 @@ const Search = () => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.headline}>
+      <View style={GlobalStyles.cardContainer}>
+        <Text style={GlobalStyles.headline}>
           Vælg en <Text style={{ color: "#FF4500" }}>by</Text>
         </Text>
 
         {/* City Filter Buttons */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.cityButton, selectedCity === "København" && styles.activeCityButton]} onPress={() => setSelectedCity("København")}>
-            <Text style={styles.buttonText}>København</Text>
+        <View style={GlobalStyles.buttonContainer}>
+          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "København" && GlobalStyles.activeCityButton]} onPress={() => setSelectedCity("København")}>
+            <Text style={GlobalStyles.buttonText}>København</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.cityButton, selectedCity === "Aarhus" && styles.activeCityButton]} onPress={() => setSelectedCity("Aarhus")}>
-            <Text style={styles.buttonText}>Aarhus</Text>
+          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "Aarhus" && GlobalStyles.activeCityButton]} onPress={() => setSelectedCity("Aarhus")}>
+            <Text style={GlobalStyles.buttonText}>Aarhus</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.cityButton, selectedCity === "Odense" && styles.activeCityButton]} onPress={() => setSelectedCity("Odense")}>
-            <Text style={styles.buttonText}>Odense</Text>
+          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "Odense" && GlobalStyles.activeCityButton]} onPress={() => setSelectedCity("Odense")}>
+            <Text style={GlobalStyles.buttonText}>Odense</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.cityButton, selectedCity === "Kort" && styles.activeCityButton]} onPress={() => navigation.navigate("MapSearch")}>
-            <Text style={styles.buttonText}>Kort</Text>
+          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "Kort" && GlobalStyles.activeCityButton]} onPress={() => navigation.navigate("MapSearch")}>
+            <Text style={GlobalStyles.buttonText}>Kort</Text>
           </TouchableOpacity>
         </View>
 
         {/* Waitlist Filter Toggle */}
-        <TouchableOpacity style={[styles.button, waitlistFilter ? styles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
-          <Text style={styles.buttonText}>{waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}</Text>
+        <TouchableOpacity style={[GlobalStyles.button, waitlistFilter ? GlobalStyles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
+          <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}</Text>
         </TouchableOpacity>
 
         {/* Filtered Results */}
         {filterResults().map((location) => (
-          <RestaurantCard
+          <TouchableOpacity
             key={location.id}
-            name={location.name}
-            cuisine={location.cuisine}
-            image='https://picsum.photos/500/500' // Placeholder image
-            rating='5' // Replace with actual rating if available
-          />
+            onPress={() =>
+              navigation.navigate("LocationDetails", {
+                name: location.name,
+                cuisine: location.cuisine,
+                address: location.address,
+                postalcode: location.postalcode,
+                city: location.city,
+                type: location.type,
+                priceclass: location.priceclass,
+                image: "https://picsum.photos/500/500",
+              })
+            }
+            style={GlobalStyles.cardWrapper}
+          >
+            <RestaurantCard
+              name={location.name}
+              cuisine={location.cuisine}
+              image='https://picsum.photos/500/500' // Placeholder image
+              rating='5'
+              address={location.address}
+              postalcode={location.postalcode}
+              city={location.city}
+              type={location.type}
+              priceclass={location.priceclass}
+              waitlist={location.waitlist}
+            />
+          </TouchableOpacity>
         ))}
 
         <StatusBar style='auto' />
@@ -129,53 +152,5 @@ const Search = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 85,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    backgroundColor: "#fff",
-  },
-  headline: {
-    fontSize: 28,
-    fontWeight: "bold",
-    textAlign: "center",
-    width: "93%",
-    marginBottom: 15,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    marginBottom: 15,
-  },
-  cityButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#ccc",
-    borderRadius: 5,
-  },
-  activeCityButton: {
-    backgroundColor: "#FF4500",
-  },
-  button: {
-    width: "90%",
-    padding: 15,
-    backgroundColor: "#ccc",
-    borderRadius: 5,
-    marginBottom: 15,
-    alignItems: "center",
-  },
-  activeButton: {
-    backgroundColor: "#FF4500",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-});
 
 export default Search;

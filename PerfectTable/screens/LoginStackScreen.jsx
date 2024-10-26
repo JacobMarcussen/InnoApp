@@ -11,27 +11,15 @@ function LoginStackScreen() {
   const { isAuthenticated } = useAuth(); // Få adgang til autentificeringsstatus
 
   return (
-    <LoginStack.Navigator initialRouteName="Login">
+    <LoginStack.Navigator initialRouteName='Login'>
       {isAuthenticated ? (
         // Hvis brugeren er logget ind, naviger til beskyttede skærme
-        <LoginStack.Screen
-          name="ProtectedScreen" // Erstat med din beskyttede skærm
-          component={ProtectedScreen} // Erstat med din beskyttede komponent
-          options={{ headerShown: false }}
-        />
+        <LoginStack.Screen name='ProtectedScreen' component={ProtectedScreen} options={{ headerShown: false }} />
       ) : (
         // Hvis ikke logget ind, vis login og createUser
         <>
-          <LoginStack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-          <LoginStack.Screen
-            name="CreateUser"
-            component={CreateUser}
-            options={{ headerShown: false }}
-          />
+          <LoginStack.Screen name='Login' component={Login} options={{ headerShown: false }} />
+          <LoginStack.Screen name='CreateUser' component={CreateUser} options={{ headerShown: false }} />
         </>
       )}
     </LoginStack.Navigator>

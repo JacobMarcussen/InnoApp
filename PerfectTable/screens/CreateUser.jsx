@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, Alert, TouchableOpacity } from "react-native";
 import { set, ref, get } from "firebase/database";
-import { database } from "../firebase"; // Adjust the path according to your structure
-import GlobalStyles from "../GlobalStyles"; // Adjust the import path based on your folder structure
+import { database } from "../firebase";
+import GlobalStyles from "../GlobalStyles";
 
-const CreateUser = ({ navigation }) => {  // Accept navigation prop
+const CreateUser = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,28 +72,11 @@ const CreateUser = ({ navigation }) => {  // Accept navigation prop
     <View style={GlobalStyles.container}>
       <Text style={GlobalStyles.title}>Opret Ny Bruger</Text>
 
-      <TextInput
-        style={GlobalStyles.input}
-        placeholder="Navn"
-        value={name}
-        onChangeText={setName}
-      />
+      <TextInput style={GlobalStyles.input} placeholder='Navn' value={name} onChangeText={setName} />
 
-      <TextInput
-        style={GlobalStyles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
+      <TextInput style={GlobalStyles.input} placeholder='Email' value={email} onChangeText={setEmail} keyboardType='email-address' />
 
-      <TextInput
-        style={GlobalStyles.input}
-        placeholder="Adgangskode"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      <TextInput style={GlobalStyles.input} placeholder='Adgangskode' value={password} onChangeText={setPassword} secureTextEntry />
 
       <Text style={GlobalStyles.label}>Køn:</Text>
       <View style={{ flexDirection: "row", marginBottom: 15 }}>
@@ -114,11 +97,7 @@ const CreateUser = ({ navigation }) => {  // Accept navigation prop
 
       <Text style={GlobalStyles.label}>Favorit Kategorier:</Text>
       {cuisines.map((cuisine) => (
-        <TouchableOpacity
-          key={cuisine}
-          style={GlobalStyles.checkboxContainer}
-          onPress={() => toggleCuisine(cuisine)}
-        >
+        <TouchableOpacity key={cuisine} style={GlobalStyles.checkboxContainer} onPress={() => toggleCuisine(cuisine)}>
           <View
             style={{
               width: 20,
@@ -146,20 +125,16 @@ const CreateUser = ({ navigation }) => {  // Accept navigation prop
             }}
             onPress={() => setBudget(item)}
           >
-            <Text style={{ color: budget === item ? "#fff" : "#000" }}>
-              {item === "1" ? "💲" : item === "2" ? "💲💲" : "💲💲💲"}
-            </Text>
+            <Text style={{ color: budget === item ? "#fff" : "#000" }}>{item === "1" ? "💲" : item === "2" ? "💲💲" : "💲💲💲"}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      <Button title="Opret Bruger" onPress={handleCreateUser} color="#FF4500" />
+      <Button title='Opret Bruger' onPress={handleCreateUser} color='#FF4500' />
 
       {/* Button for existing users to login */}
       <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{ marginTop: 20 }}>
-        <Text style={{ color: "#FF4500", textAlign: "center" }}>
-          Har du allerede en bruger? Login her
-        </Text>
+        <Text style={{ color: "#FF4500", textAlign: "center" }}>Har du allerede en bruger? Login her</Text>
       </TouchableOpacity>
     </View>
   );

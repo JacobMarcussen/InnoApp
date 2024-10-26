@@ -6,23 +6,15 @@ import Search from "./Search";
 import Locations from "./Locations";
 import LocationDetails from "./LocationDetails";
 import MapSearch from "./MapSearch";
-import Profile from "./Profile"
-// Stack Navigator for Locations
+import Profile from "./Profile";
+
 const LocationsStack = createStackNavigator();
 
 function LocationsStackScreen() {
   return (
-    <LocationsStack.Navigator initialRouteName="Locations">
-      <LocationsStack.Screen
-        name="Locations"
-        component={Locations}
-        options={{ headerShown: false }}
-      />
-      <LocationsStack.Screen
-        name="LocationDetails"
-        component={LocationDetails}
-        options={{ headerShown: false }}
-      />
+    <LocationsStack.Navigator initialRouteName='Locations'>
+      <LocationsStack.Screen name='Locations' component={Locations} options={{ headerShown: false }} />
+      <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
     </LocationsStack.Navigator>
   );
 }
@@ -31,22 +23,10 @@ const SearchStack = createStackNavigator();
 
 function SearchStackScreen() {
   return (
-    <SearchStack.Navigator initialRouteName="Search">
-      <SearchStack.Screen
-        name="Search"
-        component={Search}
-        options={{ headerShown: false }}
-      />
-      <SearchStack.Screen
-        name="MapSearch"
-        component={MapSearch}
-        options={{ headerShown: false }}
-      />
-      <LocationsStack.Screen
-        name="LocationDetails"
-        component={LocationDetails}
-        options={{ headerShown: false }}
-      />
+    <SearchStack.Navigator initialRouteName='Search'>
+      <SearchStack.Screen name='Search' component={Search} options={{ headerShown: false }} />
+      <SearchStack.Screen name='MapSearch' component={MapSearch} options={{ headerShown: false }} />
+      <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
     </SearchStack.Navigator>
   );
 }
@@ -72,8 +52,8 @@ export default function ProtectedScreen() {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Søg") {
             iconName = focused ? "search" : "search-outline";
-          } else if (route.name === "Settings") {
-            iconName = focused ? "settings" : "settings-outline";
+          } else if (route.name === "Profil") {
+            iconName = focused ? "person" : "person-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -84,21 +64,9 @@ export default function ProtectedScreen() {
         },
       })}
     >
-      <Tab.Screen
-        name="Udforsk"
-        component={LocationsStackScreen} 
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Søg"
-        component={SearchStackScreen} 
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Profil"
-        component={Profile}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name='Udforsk' component={LocationsStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name='Søg' component={SearchStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name='Profil' component={Profile} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }

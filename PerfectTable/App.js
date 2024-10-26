@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthProvider } from "./components/AuthContext"; // Juster stien til AuthContext
-import LoginStackScreen from "./screens/LoginStackScreen"; // Juster stien til din LoginStackScreen
+import { AuthProvider } from "./components/AuthContext";
+import LoginStackScreen from "./screens/LoginStackScreen";
 
 export default function App() {
   return (

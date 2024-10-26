@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, StatusBar, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, StatusBar, Text, ScrollView, TouchableOpacity } from "react-native";
 import RestaurantCard from "../components/RestaurantCard";
 import { set, ref, get, child } from "firebase/database";
 import { database } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
+import GlobalStyles from "../GlobalStyles";
 
 // function addTestLocation() {
 //   set(ref(database, "locations/1"), {
@@ -57,8 +58,8 @@ const Locations = () => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.headline}>
+      <View style={GlobalStyles.cardContainer}>
+        <Text style={GlobalStyles.headline}>
           Anbefalede <Text style={{ color: "#FF4500" }}>lokationer</Text>
         </Text>
         {locations.map((location) => (
@@ -76,7 +77,7 @@ const Locations = () => {
                 image: "https://picsum.photos/500/500",
               })
             }
-            style={styles.cardWrapper}
+            style={GlobalStyles.cardWrapper}
           >
             <RestaurantCard
               name={location.name}
@@ -95,8 +96,8 @@ const Locations = () => {
         <StatusBar style='auto' />
       </View>
 
-      <View style={styles.containerWaitlist}>
-        <Text style={styles.headline}>
+      <View style={GlobalStyles.containerWaitlist}>
+        <Text style={GlobalStyles.headline}>
           Mulighed for <Text style={{ color: "#FF4500" }}>venteliste</Text>
         </Text>
         {locations
@@ -116,7 +117,7 @@ const Locations = () => {
                   image: "https://picsum.photos/500/500", // Placeholder image
                 })
               }
-              style={styles.cardWrapper}
+              style={GlobalStyles.cardWrapper}
             >
               <RestaurantCard
                 name={location.name}
@@ -137,40 +138,5 @@ const Locations = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 85,
-    alignItems: "center",
-    justifyContent: "start",
-    width: "100%",
-    backgroundColor: "#fff",
-  },
-  cardWrapper: {
-    flex: 1,
-    width: "100%",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    paddingBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headline: {
-    fontSize: 28,
-    fontWeight: "bold",
-    textAlign: "start",
-    width: "93%",
-    marginBottom: 15,
-  },
-  containerWaitlist: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "start",
-    width: "100%",
-  },
-});
 
 export default Locations;
