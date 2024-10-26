@@ -4,7 +4,7 @@ import { set, ref, get } from "firebase/database";
 import { database } from "../firebase"; // Adjust the path according to your structure
 import GlobalStyles from "../GlobalStyles"; // Adjust the import path based on your folder structure
 
-const CreateUser = () => {
+const CreateUser = ({ navigation }) => {  // Accept navigation prop
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -152,9 +152,15 @@ const CreateUser = () => {
           </TouchableOpacity>
         ))}
       </View>
-     
 
       <Button title="Opret Bruger" onPress={handleCreateUser} color="#FF4500" />
+
+      {/* Button for existing users to login */}
+      <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{ marginTop: 20 }}>
+        <Text style={{ color: "#FF4500", textAlign: "center" }}>
+          Har du allerede en bruger? Login her
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
