@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, StatusBar, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, StatusBar, Text, ScrollView, TouchableOpacity } from "react-native";
 import RestaurantCard from "../components/RestaurantCard";
 import { set, ref, get, child } from "firebase/database";
 import { database } from "../firebase";
@@ -85,7 +85,7 @@ const Search = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
       <View style={GlobalStyles.cardContainer}>
         <Text style={GlobalStyles.headline}>
           Vælg en <Text style={{ color: "#FF4500" }}>by</Text>

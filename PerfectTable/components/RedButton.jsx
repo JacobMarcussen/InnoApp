@@ -1,27 +1,13 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
+import GlobalStyles from "../GlobalStyles";
 
 const RedButton = ({ onPress, title }) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
+    <TouchableOpacity style={GlobalStyles.redButton} onPress={onPress}>
+      <Text style={GlobalStyles.redButtonText}>{title}</Text>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#FF2E00",
-    borderBottomWidth: 4,
-    borderColor: "#D64933",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-  },
-});
 
 export default RedButton;

@@ -57,7 +57,7 @@ const Locations = () => {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
       <View style={GlobalStyles.cardContainer}>
         <Text style={GlobalStyles.headline}>
           Anbefalede <Text style={{ color: "#FF4500" }}>lokationer</Text>

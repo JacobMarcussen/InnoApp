@@ -39,8 +39,8 @@ export default function ProtectedScreen() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
-          backgroundColor: "#fff",
-          borderTopColor: "#EAEAEA",
+          backgroundColor: "#1e1e1e",
+          borderTopColor: "#1e1e1e",
           paddingBottom: 25,
           paddingTop: 10,
         },

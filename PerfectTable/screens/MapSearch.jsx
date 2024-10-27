@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, ActivityIndicator, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "react-native-vector-icons";
+import GlobalStyles from "../GlobalStyles";
 
 const API_KEY = "AIzaSyDnO5fAAiOqwGxk14zbI4SrOmao9vyv0Gk";
 
@@ -72,19 +73,19 @@ const MapSearch = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={GlobalStyles.loadingContainer}>
         <ActivityIndicator size='large' color='#0000ff' />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+    <View style={GlobalStyles.cardContainer}>
+      <TouchableOpacity style={GlobalStyles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name='arrow-back' size={24} color='#fff' />
       </TouchableOpacity>
       <MapView
-        style={styles.map}
+        style={GlobalStyles.map}
         initialRegion={{
           latitude: 55.6761,
           longitude: 12.5683,
@@ -119,23 +120,5 @@ const MapSearch = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { width: "100%", height: "100%" },
-  loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#313131",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    top: 60,
-    left: 20,
-    zIndex: 1,
-  },
-});
 
 export default MapSearch;

@@ -63,7 +63,7 @@ const Profile = () => {
   );
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
       <View style={GlobalStyles.cardContainer}>
         {user ? (
           <>
