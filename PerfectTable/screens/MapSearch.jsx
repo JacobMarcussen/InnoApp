@@ -6,8 +6,9 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "react-native-vector-icons";
 import GlobalStyles from "../GlobalStyles";
+import Config from "react-native-config";
 
-const API_KEY = "AIzaSyDnO5fAAiOqwGxk14zbI4SrOmao9vyv0Gk";
+const API_KEY = Config.API_KEY;
 
 const MapSearch = () => {
   const [locations, setLocations] = useState([]);
