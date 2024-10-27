@@ -1,5 +1,7 @@
 # InnoApp/PerfectTable
 
+Vi har valgt at merge og gået videre med et design. Nedenfor er fordeling beskrevet:
+
 Jacob har lavet følgende screens:
 
 - Profile

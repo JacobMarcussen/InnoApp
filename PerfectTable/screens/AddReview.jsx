@@ -10,6 +10,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import GlobalStyles from "../GlobalStyles";
 
 const AddReview = () => {
+  // State variabler til at holde værdierne af anmeldelsen
   const [review, setReview] = useState("");
   const [rating, setRating] = useState("");
   const [image, setImage] = useState(null);
@@ -18,7 +19,7 @@ const AddReview = () => {
   const route = useRoute();
   const { locationId } = route.params;
 
-  // Pick an image from the device
+  // Mulighed for at vælge et billede fra kamerarullen
   const pickImage = async () => {
     const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -34,7 +35,7 @@ const AddReview = () => {
         setImage(pickerResult.uri);
       }
     } else {
-      Alert.alert("Permission required", "Permission to access camera roll is required!");
+      Alert.alert("Adgang krævet", "Tillad adgang til kamerarullen for at vælge et billede.");
     }
   };
 
@@ -42,7 +43,7 @@ const AddReview = () => {
     if (review && rating) {
       let imageUrl = null;
 
-      // Upload image to Firebase Storage if an image is selected
+      // Upload billede til storage hvis der er et billede
       if (image) {
         try {
           const imageBlob = await (await fetch(image)).blob();
@@ -58,6 +59,7 @@ const AddReview = () => {
         }
       }
 
+      // Opretter et objekt med anmeldelsesdata
       const reviewData = {
         review,
         rating: parseInt(rating),
@@ -68,12 +70,14 @@ const AddReview = () => {
 
       const reviewsRef = ref(database, `reviews/${locationId}`);
 
+      // Tilføjer anmeldelsen til databasen
       push(reviewsRef, reviewData)
         .then((snapshot) => {
           const reviewId = snapshot.key;
 
           const userReviewsRef = ref(database, `users/${user.id}/reviews`);
 
+          // Tilføjer anmeldelsen til brugerens reviews
           update(userReviewsRef, {
             [reviewId]: { locationId, rating: reviewData.rating, timestamp: reviewData.timestamp, imageUrl },
           })

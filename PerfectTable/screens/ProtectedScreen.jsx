@@ -8,8 +8,8 @@ import MapSearch from "./MapSearch";
 import Profile from "./Profile";
 import AddReview from "./AddReview";
 
+// Stack navigator til at håndtere navigationen mellem Locations, LocationDetails og AddReview
 const LocationsStack = createStackNavigator();
-
 function LocationsStackScreen() {
   return (
     <LocationsStack.Navigator initialRouteName='Locations'>
@@ -20,8 +20,8 @@ function LocationsStackScreen() {
   );
 }
 
+// Stack navigator til at håndtere navigationen mellem Search, MapSearch og LocationDetails
 const SearchStack = createStackNavigator();
-
 function SearchStackScreen() {
   return (
     <SearchStack.Navigator initialRouteName='Search'>
@@ -32,8 +32,8 @@ function SearchStackScreen() {
   );
 }
 
+// Bottom tab navigator til at navigere mellem Locations, Search og Profile
 const Tab = createBottomTabNavigator();
-
 export default function ProtectedScreen() {
   return (
     <Tab.Navigator

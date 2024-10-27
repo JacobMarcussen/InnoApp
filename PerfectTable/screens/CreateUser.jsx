@@ -4,6 +4,7 @@ import { set, ref, get } from "firebase/database";
 import { database } from "../firebase";
 import GlobalStyles from "../GlobalStyles";
 
+// Komponent til at oprette en ny bruger
 const CreateUser = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const CreateUser = ({ navigation }) => {
   const cuisines = ["Italiensk", "Thailandsk", "Indisk", "Mexicansk", "Sushi"];
 
   const handleCreateUser = () => {
+    // Tjekker om alle felter er udfyldt
     if (!name || !email || !password || !gender || !budget) {
       Alert.alert("Fejl", "Udfyld venligst alle felter");
       return;
@@ -22,10 +24,12 @@ const CreateUser = ({ navigation }) => {
 
     const usersRef = ref(database, "users");
 
+    // Henter brugerdata fra Firebase for at finde det næste ledige bruger-id
     get(usersRef)
       .then((snapshot) => {
         let newUserId = 1;
 
+        // Hvis der allerede er brugere i databasen, findes det højeste bruger-id og det næste ledige id beregnes
         if (snapshot.exists()) {
           const usersData = snapshot.val();
           const userIds = Object.keys(usersData).map(Number);
@@ -33,11 +37,12 @@ const CreateUser = ({ navigation }) => {
           newUserId = maxId + 1;
         }
 
+        // Opretter brugerobjekt og gemmer i Firebase
         set(ref(database, `users/${newUserId}`), {
           id: newUserId,
           name,
           email,
-          password, // Consider hashing passwords in a real app!
+          password, // Bliver bliver ikke hashet i, da det blot er til test
           gender,
           cuisines: selectedCuisines,
           budget,
@@ -60,6 +65,7 @@ const CreateUser = ({ navigation }) => {
       });
   };
 
+  // Funktion til at tilføje eller fjerne en kategori fra brugerens favoritter
   const toggleCuisine = (cuisine) => {
     if (selectedCuisines.includes(cuisine)) {
       setSelectedCuisines(selectedCuisines.filter((item) => item !== cuisine));
@@ -68,6 +74,7 @@ const CreateUser = ({ navigation }) => {
     }
   };
 
+  // Returnerer JSX komponent med inputfelter og knapper
   return (
     <View style={GlobalStyles.container}>
       <Text style={GlobalStyles.title}>Opret Ny Bruger</Text>

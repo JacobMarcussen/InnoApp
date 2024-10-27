@@ -6,6 +6,7 @@ import RatingInfo from "./RatingInfo";
 import DeliveryInfo from "./DeliveryInfo";
 import GlobalStyles from "../GlobalStyles";
 
+// RestaurantCard component
 const RestaurantCard = ({ name, cuisine, image, rating, address, postalcode, city, type, priceclass, waitlist }) => {
   return (
     <View style={GlobalStyles.resCard}>

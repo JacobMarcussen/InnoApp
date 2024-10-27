@@ -14,6 +14,7 @@ const MapSearch = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
+  // Henter locations fra AsyncStorage og geocoder dem, hvis de mangler koordinater
   useEffect(() => {
     const geocodeLocations = async (locationsArray) => {
       const geocodedLocations = await Promise.all(
@@ -21,6 +22,7 @@ const MapSearch = () => {
           if (!location.latitude || !location.longitude) {
             const address = `${location.address}, ${location.postalcode}, Copenhagen`;
             console.log("Attempting to geocode address:", address);
+            // Hent koordinater fra Google Maps Geocode API
             try {
               const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
                 params: {
@@ -49,6 +51,7 @@ const MapSearch = () => {
       return geocodedLocations;
     };
 
+    // Henter locations fra AsyncStorage
     const loadLocations = async () => {
       setLoading(true);
       try {
@@ -60,7 +63,7 @@ const MapSearch = () => {
           locationsArray = await geocodeLocations(locationsArray);
           await AsyncStorage.setItem("markers", JSON.stringify(locationsArray));
         }
-
+        // Opdaterer state med locations
         setLocations(locationsArray);
       } catch (error) {
         console.error("Error loading markers from AsyncStorage:", error);
@@ -71,6 +74,7 @@ const MapSearch = () => {
     loadLocations();
   }, []);
 
+  // Viser loading spinner, mens locations hentes
   if (loading) {
     return (
       <View style={GlobalStyles.loadingContainer}>
@@ -93,6 +97,7 @@ const MapSearch = () => {
           longitudeDelta: 0.5,
         }}
       >
+        {/* Viser locations som Markers på kortet */}
         {locations.map((location) => (
           <Marker
             key={location.id}

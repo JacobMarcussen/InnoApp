@@ -19,6 +19,7 @@ const Login = ({ navigation }) => {
 
     const usersRef = ref(database, "users");
 
+    // Henter brugerdata fra Firebase og tjekker om brugeren findes
     get(usersRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -28,7 +29,7 @@ const Login = ({ navigation }) => {
           const user = users.find((user) => user.email === email && user.password === password);
 
           if (user) {
-            // Save user data to AsyncStorage
+            // Gemmer brugerdata i AsyncStorage og logger brugeren ind
             AsyncStorage.setItem("user", JSON.stringify(user))
               .then(() => {
                 login(user);

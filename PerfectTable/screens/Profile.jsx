@@ -8,7 +8,10 @@ import { ref, update } from "firebase/database";
 const cuisineOptions = ["Indisk", "Thai", "Italiensk", "Kinesisk"];
 
 const Profile = () => {
+  // Brugerens data og funktioner fra AuthContext
   const { user, logout } = useAuth();
+
+  // State variabler til at holde værdierne af brugerens profil
   const [budget, setBudget] = useState(user?.budget || "1");
   const [cuisines, setCuisines] = useState(user?.cuisines || []);
   const [customCuisine, setCustomCuisine] = useState("");
@@ -23,6 +26,7 @@ const Profile = () => {
       return;
     }
 
+    // Opretter en reference til brugeren i databasen
     const userRef = ref(database, `users/${user.id}`);
 
     update(userRef, {
@@ -45,6 +49,7 @@ const Profile = () => {
     logout();
   };
 
+  // Funktion til at tilføje eller fjerne et køkken fra brugerens køkkensamling
   const toggleCuisine = (cuisine) => {
     setCuisines((prev) => (prev.includes(cuisine) ? prev.filter((c) => c !== cuisine) : [...prev, cuisine]));
   };

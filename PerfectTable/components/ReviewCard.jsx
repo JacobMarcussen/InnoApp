@@ -9,6 +9,7 @@ const ReviewCard = ({ review, rating, timestamp, creator, imageUrl }) => {
       <Text style={GlobalStyles.creatorText}>{creator}</Text>
       <Text style={GlobalStyles.reviewText}>{review}</Text>
       <Text style={GlobalStyles.ratingText}>Rating: {rating} / 5</Text>
+      {/* Hvis imageUrl er givet, vises billedet */}
       {imageUrl && <Image source={{ uri: imageUrl }} style={GlobalStyles.reviewImage} />}
       <Text style={GlobalStyles.timestampText}>{moment(timestamp).fromNow()}</Text>
     </View>
