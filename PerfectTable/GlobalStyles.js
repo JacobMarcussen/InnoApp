@@ -15,6 +15,18 @@ const GlobalStyles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#fff",
   },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#313131",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 60,
+    left: 20,
+    zIndex: 1,
+  },
   cardWrapper: {
     flex: 1,
     width: "100%",
@@ -137,6 +149,65 @@ const GlobalStyles = StyleSheet.create({
   budgetText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  info: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 15,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
+  creatorText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
+  },
+  reviewText: {
+    fontSize: 16,
+    color: "#444",
+    marginBottom: 8,
+  },
+  ratingText: {
+    fontSize: 14,
+    color: "#FF4500",
+    marginBottom: 5,
+  },
+  timestampText: {
+    fontSize: 12,
+    color: "#777",
+  },
+  imagePreview: {
+    width: 100,
+    height: 100,
+    marginTop: 10,
+    borderRadius: 8,
+  },
+  reviewImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+    marginTop: 10,
   },
 });
 

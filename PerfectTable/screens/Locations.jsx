@@ -67,6 +67,7 @@ const Locations = () => {
             key={location.id}
             onPress={() =>
               navigation.navigate("LocationDetails", {
+                id: location.id,
                 name: location.name,
                 cuisine: location.cuisine,
                 address: location.address,

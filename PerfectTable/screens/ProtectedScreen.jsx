@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -7,6 +6,7 @@ import Locations from "./Locations";
 import LocationDetails from "./LocationDetails";
 import MapSearch from "./MapSearch";
 import Profile from "./Profile";
+import AddReview from "./AddReview";
 
 const LocationsStack = createStackNavigator();
 
@@ -15,6 +15,7 @@ function LocationsStackScreen() {
     <LocationsStack.Navigator initialRouteName='Locations'>
       <LocationsStack.Screen name='Locations' component={Locations} options={{ headerShown: false }} />
       <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
+      <LocationsStack.Screen name='AddReview' component={AddReview} options={{ headerShown: false }} />
     </LocationsStack.Navigator>
   );
 }
