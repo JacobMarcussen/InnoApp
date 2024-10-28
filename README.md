@@ -9,8 +9,8 @@ Jacob har lavet følgende screens:
 
 Niels Gustav har lavet følgende screens:
 
-- AddReview(AddReviews bruger kamera funktionalitet)
-- Reviews
+- AddReview(Benyyter tværgående database integrering)
+- Reviews(Benyyter tværgående database integrering)
 
 Valdemar har lavet følgende screens:
 
