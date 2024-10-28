@@ -4,13 +4,13 @@ Vi har valgt at merge og gået videre med et design. Nedenfor er fordeling beskr
 
 Jacob har lavet følgende screens:
 
-- Profile
+- Profile (Opdatering af profil, som inkluderer "køkken" præferencer)
 - MapSearch (MapSearch benytter funktionaliteten kort)
 
 Niels Gustav har lavet følgende screens:
 
-- AddReview(AddReviews bruger kamera funktionalitet)
-- Reviews
+- AddReview(AddReviews bruger kamerarulle funktionalitet)
+- Reviews (Vises via liste gennem database relationer)
 
 Valdemar har lavet følgende screens:
 
