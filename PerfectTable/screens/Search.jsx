@@ -5,46 +5,17 @@ import { set, ref, get, child } from "firebase/database";
 import { database } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 import GlobalStyles from "../GlobalStyles";
+import ModalDropdown from "react-native-modal-dropdown";
 
-// const addSampleLocations = () => {
-//   const locationData = [
-//     {
-//       id: "1",
-//       name: "Flammen",
-//       cuisine: "Kød",
-//       city: "København",
-//       waitlist: true,
-//     },
-//     {
-//       id: "2",
-//       name: "Noma",
-//       cuisine: "Nordic",
-//       city: "Aarhus",
-//       waitlist: false,
-//     },
-//     {
-//       id: "3",
-//       name: "Geranium",
-//       cuisine: "Fine Dining",
-//       city: "København",
-//       waitlist: true,
-//     },
-//   ];
-
-//   locationData.forEach((location) => {
-//     set(ref(database, `locations/${location.id}`), location)
-//       .then(() => console.log("Location added"))
-//       .catch((error) => console.error("Error adding location:", error));
-//   });
-// };
-
-// addSampleLocations();
 const Search = () => {
-  const [selectedCity, setSelectedCity] = useState("");
-  const [waitlistFilter, setWaitlistFilter] = useState(false);
-  const [locations, setLocations] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(""); // Byvalg
+  const [selectedTime, setSelectedTime] = useState("17:00"); // Tidsvalg
+  const [waitlistFilter, setWaitlistFilter] = useState(false); // Venteliste-filter
+  const [locations, setLocations] = useState([]); // Lokationer fra databasen
+  const [showMap, setShowMap] = useState(false); // Kortvisning toggle
   const navigation = useNavigation();
 
+  // Hent lokationer fra databasen
   useEffect(() => {
     const fetchLocations = () => {
       const dbRef = ref(database);
@@ -69,13 +40,15 @@ const Search = () => {
     fetchLocations();
   }, []);
 
-  // Filter function based on city and waitlist
+  // Filtrér lokationer baseret på valg
   const filterResults = () => {
     let filteredResults = locations;
 
     if (selectedCity) {
       filteredResults = filteredResults.filter((location) => location.city.toLowerCase().includes(selectedCity.toLowerCase()));
     }
+
+    filteredResults = filteredResults.filter((location) => location.times[selectedTime]);
 
     if (waitlistFilter) {
       filteredResults = filteredResults.filter((location) => location.waitlist);
@@ -85,67 +58,76 @@ const Search = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
+    <ScrollView style={{ backgroundColor: "#1e1e1e" }} contentContainerStyle={{ paddingBottom: 20 }}>
       <View style={GlobalStyles.cardContainer}>
         <Text style={GlobalStyles.headline}>
-          Vælg en <Text style={{ color: "#FF4500" }}>by</Text>
+          Find dit næste <Text style={{ color: "#FF4500" }}>spisested</Text>
         </Text>
 
-        {/* City Filter Buttons */}
-        <View style={GlobalStyles.buttonContainer}>
-          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "København" && GlobalStyles.activeCityButton]} onPress={() => setSelectedCity("København")}>
-            <Text style={GlobalStyles.buttonText}>København</Text>
-          </TouchableOpacity>
+        <View style={GlobalStyles.container}>
+          {/* Byvalg Dropdown */}
+          <ModalDropdown
+            options={["København", "Aarhus", "Odense", "Roskilde"]}
+            defaultValue={selectedCity}
+            onSelect={(index, value) => setSelectedCity(value)}
+            style={GlobalStyles.dropdown}
+            textStyle={GlobalStyles.dropdownText}
+            dropdownStyle={GlobalStyles.dropdownMenu}
+            dropdownTextStyle={GlobalStyles.dropdownItemText}
+            dropdownTextHighlightStyle={GlobalStyles.dropdownItemTextHighlight}
+          />
 
-          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "Aarhus" && GlobalStyles.activeCityButton]} onPress={() => setSelectedCity("Aarhus")}>
-            <Text style={GlobalStyles.buttonText}>Aarhus</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "Odense" && GlobalStyles.activeCityButton]} onPress={() => setSelectedCity("Odense")}>
-            <Text style={GlobalStyles.buttonText}>Odense</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[GlobalStyles.cityButton, selectedCity === "Kort" && GlobalStyles.activeCityButton]} onPress={() => navigation.navigate("MapSearch")}>
-            <Text style={GlobalStyles.buttonText}>Kort</Text>
-          </TouchableOpacity>
+          {/* Tidsvalg Dropdown */}
+          <ModalDropdown
+            options={["17:00", "18:00", "19:00", "20:00", "21:00"]}
+            defaultValue={selectedTime}
+            onSelect={(index, value) => setSelectedTime(value)}
+            style={GlobalStyles.dropdown}
+            textStyle={GlobalStyles.dropdownText}
+            dropdownStyle={GlobalStyles.dropdownMenu}
+            dropdownTextStyle={GlobalStyles.dropdownItemText}
+            dropdownTextHighlightStyle={GlobalStyles.dropdownItemTextHighlight}
+          />
         </View>
 
-        {/* Waitlist Filter Toggle */}
+        {/* Venteliste Filter Toggle */}
         <TouchableOpacity style={[GlobalStyles.button, waitlistFilter ? GlobalStyles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
           <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}</Text>
         </TouchableOpacity>
 
-        {/* Filtered Results */}
-        {filterResults().map((location) => (
-          <TouchableOpacity
-            key={location.id}
-            onPress={() =>
-              navigation.navigate("LocationDetails", {
-                name: location.name,
-                cuisine: location.cuisine,
-                address: location.address,
-                postalcode: location.postalcode,
-                city: location.city,
-                type: location.type,
-                priceclass: location.priceclass,
-                image: "https://picsum.photos/500/500",
-              })
-            }
-            style={GlobalStyles.cardWrapper}
-          >
-            <RestaurantCard
-              name={location.name}
-              cuisine={location.cuisine}
-              image='https://picsum.photos/500/500' // Placeholder image
-              rating='5'
-              address={location.address}
-              postalcode={location.postalcode}
-              city={location.city}
-              type={location.type}
-              priceclass={location.priceclass}
-              waitlist={location.waitlist}
-            />
+        {/* Kortvisning Toggle */}
+        <TouchableOpacity style={[GlobalStyles.button, showMap ? GlobalStyles.activeButton : null]} onPress={() => setShowMap(!showMap)}>
+          <Text style={GlobalStyles.buttonText}>{showMap ? "Vis Liste" : "Vis Kort"}</Text>
+        </TouchableOpacity>
+
+        {/* Vis Kort eller Filterede Resultater */}
+        {showMap ? (
+          <TouchableOpacity style={GlobalStyles.mapView} onPress={() => navigation.navigate("MapSearch")}>
+            <Text style={GlobalStyles.mapText}>Åbn kortvisning</Text>
           </TouchableOpacity>
-        ))}
+        ) : (
+          filterResults().map((location) => (
+            <TouchableOpacity
+              key={location.id}
+              onPress={() =>
+                navigation.navigate("LocationDetails", {
+                  id: location.id,
+                  name: location.name,
+                  cuisine: location.cuisine,
+                  address: location.address,
+                  postalcode: location.postalcode,
+                  city: location.city,
+                  type: location.type,
+                  priceclass: location.priceclass,
+                  image: location.image,
+                })
+              }
+              style={GlobalStyles.cardWrapper}
+            >
+              <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} rating='5' address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
+            </TouchableOpacity>
+          ))
+        )}
 
         <StatusBar style='auto' />
       </View>

@@ -3,13 +3,14 @@ import { StyleSheet } from "react-native";
 const GlobalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     justifyContent: "center",
     backgroundColor: "#121212",
   },
   cardContainer: {
     flex: 1,
-    paddingTop: 85,
+    paddingTop: 25,
     alignItems: "center",
     justifyContent: "flex-start",
     width: "100%",
@@ -17,7 +18,8 @@ const GlobalStyles = StyleSheet.create({
   },
   timeContainer: {
     backgroundColor: "#333",
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 5,
     marginVertical: 5,
     marginTop: 15,
@@ -28,14 +30,44 @@ const GlobalStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   ratingContainer: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     marginTop: 5,
+    gap: 10,
   },
   ratingText: {
     marginRight: 10,
     color: "#b0b0b0",
     fontSize: 14,
+  },
+  dropdown: {
+    backgroundColor: "#333333",
+    padding: 12,
+    borderRadius: 8,
+    width: "85%",
+    marginVertical: 10,
+  },
+  dropdownText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+  },
+  dropdownMenu: {
+    width: "85%",
+    backgroundColor: "#444444",
+    borderRadius: 8,
+    marginTop: 8,
+    paddingVertical: 5,
+  },
+  dropdownItemText: {
+    color: "#FFFFFF",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    fontSize: 15,
+  },
+  dropdownItemTextHighlight: {
+    color: "#FF4500",
+    fontSize: 15,
   },
   redButton: {
     backgroundColor: "#D64933",
@@ -69,9 +101,11 @@ const GlobalStyles = StyleSheet.create({
     width: "100%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.5,
     shadowRadius: 8,
     elevation: 5,
+    borderBottomWidth: 4,
+    borderColor: "#FF4500",
   },
   resImage: {
     width: "100%",
@@ -102,12 +136,10 @@ const GlobalStyles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+    marginBottom: 20,
     backgroundColor: "#333",
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
-    top: 60,
-    left: 20,
     zIndex: 1,
   },
   cardWrapper: {

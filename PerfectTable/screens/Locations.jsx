@@ -75,23 +75,12 @@ const Locations = () => {
                 city: location.city,
                 type: location.type,
                 priceclass: location.priceclass,
-                image: "https://picsum.photos/500/500",
+                image: location.image,
               })
             }
             style={GlobalStyles.cardWrapper}
           >
-            <RestaurantCard
-              name={location.name}
-              cuisine={location.cuisine}
-              image='https://picsum.photos/500/500' // Placeholder image
-              rating='5'
-              address={location.address}
-              postalcode={location.postalcode}
-              city={location.city}
-              type={location.type}
-              priceclass={location.priceclass}
-              waitlist={location.waitlist}
-            />
+            <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
           </TouchableOpacity>
         ))}
         <StatusBar style='auto' />
@@ -108,6 +97,7 @@ const Locations = () => {
               key={location.id}
               onPress={() =>
                 navigation.navigate("LocationDetails", {
+                  id: location.id,
                   name: location.name,
                   cuisine: location.cuisine,
                   address: location.address,
@@ -115,23 +105,12 @@ const Locations = () => {
                   city: location.city,
                   type: location.type,
                   priceclass: location.priceclass,
-                  image: "https://picsum.photos/500/500", // Placeholder image
+                  image: location.image,
                 })
               }
               style={GlobalStyles.cardWrapper}
             >
-              <RestaurantCard
-                name={location.name}
-                cuisine={location.cuisine}
-                image='https://picsum.photos/500/500' // Placeholder image
-                rating='5'
-                address={location.address}
-                postalcode={location.postalcode}
-                city={location.city}
-                type={location.type}
-                priceclass={location.priceclass}
-                waitlist={location.waitlist}
-              />
+              <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
             </TouchableOpacity>
           ))}
         <StatusBar style='auto' />

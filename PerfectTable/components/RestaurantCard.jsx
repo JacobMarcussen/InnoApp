@@ -7,7 +7,7 @@ import DeliveryInfo from "./DeliveryInfo";
 import GlobalStyles from "../GlobalStyles";
 
 // RestaurantCard component
-const RestaurantCard = ({ name, cuisine, image, rating, address, postalcode, city, type, priceclass, waitlist }) => {
+const RestaurantCard = ({ id, name, cuisine, image, rating, address, postalcode, city, type, priceclass, waitlist }) => {
   return (
     <View style={GlobalStyles.resCard}>
       {/* Restaurant Image */}
@@ -23,7 +23,7 @@ const RestaurantCard = ({ name, cuisine, image, rating, address, postalcode, cit
         <RestaurantInfo title={name} description={`${address || ""}, ${postalcode || ""} ${city || ""}`} />
 
         {/* Rating and Pricing Info */}
-        <RatingInfo fee='5 kr.' priceLevel={priceclass} rating={rating || "8.8"} />
+        <RatingInfo priceLevel={priceclass} rating={rating} id={id} />
 
         {/* Delivery Time */}
         {/* Combine type and cuisine properly */}

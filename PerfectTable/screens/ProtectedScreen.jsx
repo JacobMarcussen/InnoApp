@@ -13,9 +13,44 @@ const LocationsStack = createStackNavigator();
 function LocationsStackScreen() {
   return (
     <LocationsStack.Navigator initialRouteName='Locations'>
-      <LocationsStack.Screen name='Locations' component={Locations} options={{ headerShown: false }} />
-      <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
-      <LocationsStack.Screen name='AddReview' component={AddReview} options={{ headerShown: false }} />
+      <LocationsStack.Screen
+        name='Locations'
+        component={Locations}
+        options={{
+          title: false,
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
+        }}
+      />
+      <LocationsStack.Screen
+        name='LocationDetails'
+        component={LocationDetails}
+        options={{
+          title: false,
+          headerStyle: {
+            backgroundColor: "#121212",
+            shadowColor: "transparent",
+            height: 60,
+          },
+          headerLeft: () => null,
+        }}
+      />
+      <LocationsStack.Screen
+        name='AddReview'
+        component={AddReview}
+        options={{
+          title: false,
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
+          headerLeft: () => null,
+        }}
+      />
     </LocationsStack.Navigator>
   );
 }
@@ -25,9 +60,44 @@ const SearchStack = createStackNavigator();
 function SearchStackScreen() {
   return (
     <SearchStack.Navigator initialRouteName='Search'>
-      <SearchStack.Screen name='Search' component={Search} options={{ headerShown: false }} />
-      <SearchStack.Screen name='MapSearch' component={MapSearch} options={{ headerShown: false }} />
-      <LocationsStack.Screen name='LocationDetails' component={LocationDetails} options={{ headerShown: false }} />
+      <SearchStack.Screen
+        name='Search'
+        component={Search}
+        options={{
+          title: false,
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
+        }}
+      />
+      <SearchStack.Screen
+        name='MapSearch'
+        component={MapSearch}
+        options={{
+          title: false,
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
+          headerLeft: () => null,
+        }}
+      />
+      <LocationsStack.Screen
+        name='LocationDetails'
+        component={LocationDetails}
+        options={{
+          title: false,
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
+          headerLeft: () => null,
+        }}
+      />
     </SearchStack.Navigator>
   );
 }
@@ -67,7 +137,17 @@ export default function ProtectedScreen() {
     >
       <Tab.Screen name='Udforsk' component={LocationsStackScreen} options={{ headerShown: false }} />
       <Tab.Screen name='Søg' component={SearchStackScreen} options={{ headerShown: false }} />
-      <Tab.Screen name='Profil' component={Profile} options={{ headerShown: false }} />
+      <Tab.Screen
+        name='Profil'
+        component={Profile}
+        options={{
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }
