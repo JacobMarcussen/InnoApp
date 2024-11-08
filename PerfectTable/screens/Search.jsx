@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { View, StatusBar, Text, ScrollView, TouchableOpacity } from "react-native";
 import RestaurantCard from "../components/RestaurantCard";
-import { set, ref, get, child } from "firebase/database";
+import { ref, get, child } from "firebase/database";
 import { database } from "../firebase";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import GlobalStyles from "../GlobalStyles";
-import ModalDropdown from "react-native-modal-dropdown";
 
 const Search = () => {
-  const [selectedCity, setSelectedCity] = useState(""); // Byvalg
-  const [selectedTime, setSelectedTime] = useState("17:00"); // Tidsvalg
-  const [waitlistFilter, setWaitlistFilter] = useState(false); // Venteliste-filter
-  const [locations, setLocations] = useState([]); // Lokationer fra databasen
-  const [showMap, setShowMap] = useState(false); // Kortvisning toggle
+  const route = useRoute();
   const navigation = useNavigation();
+
+  const [selectedCity, setSelectedCity] = useState(route.params?.selectedCity || "");
+  const [selectedTime, setSelectedTime] = useState(route.params?.selectedTime || "17:00");
+  const [waitlistFilter, setWaitlistFilter] = useState(route.params?.waitlistFilter || false);
+  const [locations, setLocations] = useState([]);
+  const [showMap, setShowMap] = useState(false);
 
   // Hent lokationer fra databasen
   useEffect(() => {
@@ -40,7 +41,7 @@ const Search = () => {
     fetchLocations();
   }, []);
 
-  // Filtrér lokationer baseret på valg
+  // Filtrér resultater
   const filterResults = () => {
     let filteredResults = locations;
 
@@ -64,35 +65,18 @@ const Search = () => {
           Find dit næste <Text style={{ color: "#FF4500" }}>spisested</Text>
         </Text>
 
-        <View style={GlobalStyles.container}>
-          {/* Byvalg Dropdown */}
-          <ModalDropdown
-            options={["København", "Aarhus", "Odense", "Roskilde"]}
-            defaultValue={selectedCity}
-            onSelect={(index, value) => setSelectedCity(value)}
-            style={GlobalStyles.dropdown}
-            textStyle={GlobalStyles.dropdownText}
-            dropdownStyle={GlobalStyles.dropdownMenu}
-            dropdownTextStyle={GlobalStyles.dropdownItemText}
-            dropdownTextHighlightStyle={GlobalStyles.dropdownItemTextHighlight}
-          />
-
-          {/* Tidsvalg Dropdown */}
-          <ModalDropdown
-            options={["17:00", "18:00", "19:00", "20:00", "21:00"]}
-            defaultValue={selectedTime}
-            onSelect={(index, value) => setSelectedTime(value)}
-            style={GlobalStyles.dropdown}
-            textStyle={GlobalStyles.dropdownText}
-            dropdownStyle={GlobalStyles.dropdownMenu}
-            dropdownTextStyle={GlobalStyles.dropdownItemText}
-            dropdownTextHighlightStyle={GlobalStyles.dropdownItemTextHighlight}
-          />
-        </View>
-
-        {/* Venteliste Filter Toggle */}
-        <TouchableOpacity style={[GlobalStyles.button, waitlistFilter ? GlobalStyles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
-          <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}</Text>
+        {/* Navigér til filter-skærm */}
+        <TouchableOpacity
+          style={GlobalStyles.filterButton}
+          onPress={() =>
+            navigation.navigate("Filter", {
+              selectedCity,
+              selectedTime,
+              waitlistFilter,
+            })
+          }
+        >
+          <Text style={GlobalStyles.buttonText}>Åbn Filtre</Text>
         </TouchableOpacity>
 
         {/* Kortvisning Toggle */}

@@ -5,6 +5,7 @@ import Search from "./Search";
 import Locations from "./Locations";
 import LocationDetails from "./LocationDetails";
 import MapSearch from "./MapSearch";
+import FilterScreen from "./SearchFilter";
 import Profile from "./Profile";
 import AddReview from "./AddReview";
 
@@ -85,7 +86,7 @@ function SearchStackScreen() {
           headerLeft: () => null,
         }}
       />
-      <LocationsStack.Screen
+      <SearchStack.Screen
         name='LocationDetails'
         component={LocationDetails}
         options={{
@@ -96,6 +97,18 @@ function SearchStackScreen() {
             height: 60,
           },
           headerLeft: () => null,
+        }}
+      />
+      <SearchStack.Screen
+        name='Filter'
+        component={FilterScreen}
+        options={{
+          title: "Filtre",
+          headerStyle: {
+            backgroundColor: "#1e1e1e",
+            shadowColor: "transparent",
+            height: 60,
+          },
         }}
       />
     </SearchStack.Navigator>
