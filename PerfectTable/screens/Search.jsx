@@ -10,11 +10,17 @@ const Search = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const [selectedCity, setSelectedCity] = useState(route.params?.selectedCity || "");
-  const [selectedTime, setSelectedTime] = useState(route.params?.selectedTime || "17:00");
+  const [selectedCities, setSelectedCities] = useState(route.params?.selectedCities || []);
+  const [selectedTimes, setSelectedTimes] = useState(route.params?.selectedTimes || []);
   const [waitlistFilter, setWaitlistFilter] = useState(route.params?.waitlistFilter || false);
   const [locations, setLocations] = useState([]);
   const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.selectedCities) setSelectedCities(route.params.selectedCities);
+    if (route.params?.selectedTimes) setSelectedTimes(route.params.selectedTimes);
+    setWaitlistFilter(route.params?.waitlistFilter || false);
+  }, [route.params]);
 
   // Hent lokationer fra databasen
   useEffect(() => {
@@ -45,11 +51,13 @@ const Search = () => {
   const filterResults = () => {
     let filteredResults = locations;
 
-    if (selectedCity) {
-      filteredResults = filteredResults.filter((location) => location.city.toLowerCase().includes(selectedCity.toLowerCase()));
+    if (selectedCities.length > 0) {
+      filteredResults = filteredResults.filter((location) => selectedCities.includes(location.city));
     }
 
-    filteredResults = filteredResults.filter((location) => location.times[selectedTime]);
+    if (selectedTimes.length > 0) {
+      filteredResults = filteredResults.filter((location) => selectedTimes.some((time) => location.times[time]));
+    }
 
     if (waitlistFilter) {
       filteredResults = filteredResults.filter((location) => location.waitlist);
@@ -67,11 +75,11 @@ const Search = () => {
 
         {/* Navigér til filter-skærm */}
         <TouchableOpacity
-          style={GlobalStyles.filterButton}
+          style={[GlobalStyles.button, { backgroundColor: "#FF4500" }]}
           onPress={() =>
             navigation.navigate("Filter", {
-              selectedCity,
-              selectedTime,
+              selectedCities,
+              selectedTimes,
               waitlistFilter,
             })
           }

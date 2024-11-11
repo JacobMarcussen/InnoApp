@@ -43,31 +43,17 @@ const GlobalStyles = StyleSheet.create({
   },
   dropdown: {
     backgroundColor: "#333333",
-    padding: 12,
-    borderRadius: 8,
-    width: "85%",
-    marginVertical: 10,
+    padding: 15,
+    borderRadius: 7,
+    width: "93%",
+    marginBottom: 15,
   },
-  dropdownText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-  },
-  dropdownMenu: {
-    width: "85%",
+  dropdownContainer: {
     backgroundColor: "#444444",
+    borderColor: "#333333",
     borderRadius: 8,
-    marginTop: 8,
-    paddingVertical: 5,
-  },
-  dropdownItemText: {
-    color: "#FFFFFF",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    fontSize: 15,
-  },
-  dropdownItemTextHighlight: {
-    color: "#FF4500",
-    fontSize: 15,
+    width: "93%",
+    borderColor: "#000",
   },
   redButton: {
     backgroundColor: "#D64933",
@@ -141,6 +127,8 @@ const GlobalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,
+    alignSelf: "flex-start",
+    marginLeft: 10,
   },
   cardWrapper: {
     flex: 1,
@@ -183,12 +171,14 @@ const GlobalStyles = StyleSheet.create({
     backgroundColor: "#FF4500",
   },
   button: {
-    width: "90%",
+    width: "93%",
     padding: 15,
-    backgroundColor: "#444",
-    borderRadius: 5,
+    borderRadius: 7,
     marginBottom: 15,
+    backgroundColor: "#1a1a1a",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#FF4500",
   },
   activeButton: {
     backgroundColor: "#FF4500",

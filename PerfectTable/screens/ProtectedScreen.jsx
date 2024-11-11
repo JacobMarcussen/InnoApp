@@ -109,6 +109,7 @@ function SearchStackScreen() {
             shadowColor: "transparent",
             height: 60,
           },
+          headerLeft: () => null,
         }}
       />
     </SearchStack.Navigator>
