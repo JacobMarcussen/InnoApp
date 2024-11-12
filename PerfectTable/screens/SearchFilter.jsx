@@ -46,8 +46,9 @@ const FilterScreen = ({ route }) => {
       <TouchableOpacity style={GlobalStyles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name='arrow-back' size={24} color='#fff' />
       </TouchableOpacity>
-      <Text style={GlobalStyles.headline}>Filtrer Søgeresultater</Text>
-
+      <Text style={GlobalStyles.headline}>
+        Filtrer <Text style={{ color: "#FF4500" }}>søgeresultater</Text>
+      </Text>
       {/* Byvalg Multiselect Dropdown */}
       <View style={{ zIndex: 3000 }}>
         <DropDownPicker
