@@ -5,27 +5,7 @@ import { set, ref, get, child } from "firebase/database";
 import { database } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 import GlobalStyles from "../GlobalStyles";
-
-// function addTestLocation() {
-//   set(ref(database, "locations/1"), {
-//     name: "Firebase test restaurant",
-//     address: "Bredgade 1",
-//     postalcode: "1260",
-//     city: "København K",
-//     type: "Restaurant",
-//     cuisine: "Dansk",
-//     priceclass: "Mellem",
-//     waitlist: true,
-//   })
-//     .then(() => {
-//       console.log("Test data added successfully!");
-//     })
-//     .catch((error) => {
-//       console.error("Error adding test data: ", error);
-//     });
-// }
-
-// addTestLocation();
+import Recomendations from "../components/Recomendation";
 
 const Locations = () => {
   const [locations, setLocations] = useState([]);
@@ -60,8 +40,10 @@ const Locations = () => {
     <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
       <View style={GlobalStyles.cardContainer}>
         <Text style={GlobalStyles.headline}>
-          Anbefalede <Text style={{ color: "#FF4500" }}>lokationer</Text>
+          Udforsk <Text style={{ color: "#FF4500" }}>lokationer</Text>
         </Text>
+        {/* Indsætter "overrask mig" knap her */}
+        <Recomendations locations={locations} />
         {locations.map((location) => (
           <TouchableOpacity
             key={location.id}

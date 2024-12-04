@@ -79,7 +79,7 @@ const MapSearch = () => {
   if (loading) {
     return (
       <View style={GlobalStyles.loadingContainer}>
-        <ActivityIndicator size='large' color='#0000ff' />
+        <ActivityIndicator size='small' color='#0000ff' />
       </View>
     );
   }

@@ -60,7 +60,7 @@ function LocationsStackScreen() {
 const SearchStack = createStackNavigator();
 function SearchStackScreen() {
   return (
-    <SearchStack.Navigator initialRouteName='Search'>
+    <SearchStack.Navigator initialRouteName='Filter'>
       <SearchStack.Screen
         name='Search'
         component={Search}
@@ -71,6 +71,7 @@ function SearchStackScreen() {
             shadowColor: "transparent",
             height: 60,
           },
+          headerLeft: () => null,
         }}
       />
       <SearchStack.Screen

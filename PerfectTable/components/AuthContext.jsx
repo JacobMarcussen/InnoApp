@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
     const loadUserData = async () => {
       try {
         const userData = await AsyncStorage.getItem("user");
-        console.log("Loaded user data:", userData);
         if (userData) {
           // Hvis der er data i AsyncStorage, så opdaterer vi brugerens data og sætter isAuthenticated til true
           setUser(JSON.parse(userData));

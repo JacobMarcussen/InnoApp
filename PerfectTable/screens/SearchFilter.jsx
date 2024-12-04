@@ -43,11 +43,8 @@ const FilterScreen = ({ route }) => {
 
   return (
     <View style={GlobalStyles.cardContainer}>
-      <TouchableOpacity style={GlobalStyles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name='arrow-back' size={24} color='#fff' />
-      </TouchableOpacity>
       <Text style={GlobalStyles.headline}>
-        Filtrer <Text style={{ color: "#FF4500" }}>søgeresultater</Text>
+        Find dit næste <Text style={{ color: "#FF4500" }}>spisested</Text>
       </Text>
       {/* Byvalg Multiselect Dropdown */}
       <View style={{ zIndex: 3000 }}>
@@ -100,7 +97,7 @@ const FilterScreen = ({ route }) => {
 
       {/* Anvend filtre knap */}
       <TouchableOpacity style={[GlobalStyles.button, { backgroundColor: "#FF4500" }]} onPress={applyFilters}>
-        <Text style={GlobalStyles.applyButtonText}>Anvend Filtre</Text>
+        <Text style={GlobalStyles.applyButtonText}>Vis resultater</Text>
       </TouchableOpacity>
     </View>
   );

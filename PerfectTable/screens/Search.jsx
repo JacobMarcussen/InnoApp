@@ -47,6 +47,12 @@ const Search = () => {
     fetchLocations();
   }, []);
 
+  useEffect(() => {
+    if (showMap) {
+      navigation.navigate("MapSearch");
+    }
+  }, [showMap]);
+
   // Filtrér resultater
   const filterResults = () => {
     let filteredResults = locations;
@@ -70,7 +76,7 @@ const Search = () => {
     <ScrollView style={{ backgroundColor: "#1e1e1e" }} contentContainerStyle={{ paddingBottom: 20 }}>
       <View style={GlobalStyles.cardContainer}>
         <Text style={GlobalStyles.headline}>
-          Find dit næste <Text style={{ color: "#FF4500" }}>spisested</Text>
+          Dine <Text style={{ color: "#FF4500" }}>søgeresultater</Text>
         </Text>
 
         {/* Navigér til filter-skærm */}
@@ -88,38 +94,32 @@ const Search = () => {
         </TouchableOpacity>
 
         {/* Kortvisning Toggle */}
-        <TouchableOpacity style={[GlobalStyles.button, showMap ? GlobalStyles.activeButton : null]} onPress={() => setShowMap(!showMap)}>
-          <Text style={GlobalStyles.buttonText}>{showMap ? "Vis Liste" : "Vis Kort"}</Text>
+        <TouchableOpacity style={[GlobalStyles.button]} onPress={() => setShowMap(!showMap)}>
+          <Text style={GlobalStyles.buttonText}>{"Vis Kort"}</Text>
         </TouchableOpacity>
 
         {/* Vis Kort eller Filterede Resultater */}
-        {showMap ? (
-          <TouchableOpacity style={GlobalStyles.mapView} onPress={() => navigation.navigate("MapSearch")}>
-            <Text style={GlobalStyles.mapText}>Åbn kortvisning</Text>
+        {filterResults().map((location) => (
+          <TouchableOpacity
+            key={location.id}
+            onPress={() =>
+              navigation.navigate("LocationDetails", {
+                id: location.id,
+                name: location.name,
+                cuisine: location.cuisine,
+                address: location.address,
+                postalcode: location.postalcode,
+                city: location.city,
+                type: location.type,
+                priceclass: location.priceclass,
+                image: location.image,
+              })
+            }
+            style={GlobalStyles.cardWrapper}
+          >
+            <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} rating='5' address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
           </TouchableOpacity>
-        ) : (
-          filterResults().map((location) => (
-            <TouchableOpacity
-              key={location.id}
-              onPress={() =>
-                navigation.navigate("LocationDetails", {
-                  id: location.id,
-                  name: location.name,
-                  cuisine: location.cuisine,
-                  address: location.address,
-                  postalcode: location.postalcode,
-                  city: location.city,
-                  type: location.type,
-                  priceclass: location.priceclass,
-                  image: location.image,
-                })
-              }
-              style={GlobalStyles.cardWrapper}
-            >
-              <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} rating='5' address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
-            </TouchableOpacity>
-          ))
-        )}
+        ))}
 
         <StatusBar style='auto' />
       </View>

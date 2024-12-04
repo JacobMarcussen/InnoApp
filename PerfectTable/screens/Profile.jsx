@@ -12,7 +12,6 @@ const Profile = () => {
 
   // State variabler til at holde værdierne af brugerens profil
   const [budget, setBudget] = useState(user?.budget || "1");
-  const [customCuisine, setCustomCuisine] = useState("");
   const [email, setEmail] = useState(user?.email || "");
   const [gender, setGender] = useState(user?.gender || "");
   const [name, setName] = useState(user?.name || "");
@@ -24,7 +23,7 @@ const Profile = () => {
     { label: "Thai", value: "Thai" },
     { label: "Italiensk", value: "Italiensk" },
     { label: "Kinesisk", value: "Kinesisk" },
-    { label: "Fine dinning", value: "Fine dinning" },
+    { label: "Fine dining", value: "Fine dining" },
     { label: "Dansk", value: "Dansk" },
     { label: "Fransk", value: "Fransk" },
   ]);
@@ -38,6 +37,7 @@ const Profile = () => {
     // Opretter en reference til brugeren i databasen
     const userRef = ref(database, `users/${user.id}`);
 
+    console.log(cuisines);
     update(userRef, {
       budget,
       cuisines,
@@ -57,24 +57,6 @@ const Profile = () => {
   const handleLogout = () => {
     logout();
   };
-
-  // Funktion til at tilføje eller fjerne et køkken fra brugerens køkkensamling
-  const toggleCuisine = (cuisine) => {
-    setCuisines((prev) => (prev.includes(cuisine) ? prev.filter((c) => c !== cuisine) : [...prev, cuisine]));
-  };
-
-  const addCustomCuisine = () => {
-    if (customCuisine.trim() && !cuisines.includes(customCuisine)) {
-      setCuisines((prev) => [...prev, customCuisine.trim()]);
-      setCustomCuisine("");
-    }
-  };
-
-  const renderCuisineOption = ({ item }) => (
-    <TouchableOpacity onPress={() => toggleCuisine(item)} style={GlobalStyles.cuisineBox}>
-      <Text style={cuisines.includes(item) ? GlobalStyles.selectedCuisine : GlobalStyles.unselectedCuisine}>{item}</Text>
-    </TouchableOpacity>
-  );
 
   return (
     <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
@@ -103,7 +85,7 @@ const Profile = () => {
                 setItems={setCuisineItems}
                 multiple={true}
                 mode='BADGE'
-                placeholder='Vælg Tid(er)'
+                placeholder='Vælg Køkken(er)'
                 badgeColors='#FF4500'
                 badgeTextStyle={{ color: "#FFF" }}
                 textStyle={{ color: "#fff", fontWeight: "bold" }}
