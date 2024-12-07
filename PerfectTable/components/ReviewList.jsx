@@ -33,7 +33,21 @@ const ReviewsList = ({ locationId }) => {
   const renderReview = ({ item }) => <ReviewCard review={item.review} rating={item.rating} timestamp={item.timestamp} creator={item.creator} />;
 
   // Returnerer en liste af reviews, hvis der er reviews, ellers vises en besked
-  return <View style={GlobalStyles.container}>{reviews.length > 0 ? <FlatList data={reviews} renderItem={renderReview} keyExtractor={(item) => item.id} /> : <Text>Ingen anmeldelser tilgængelig.</Text>}</View>;
+  return (
+    <View style={[GlobalStyles.container, { width: "100%", alignItems: "center" }]}>
+      {reviews.length > 0 ? (
+        <FlatList
+          style={{ width: "100%" }} // Corrected width to take up the full width of the parent
+          contentContainerStyle={{ alignItems: "center" }} // Centers the list items
+          data={reviews}
+          renderItem={renderReview}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text>Ingen anmeldelser tilgængelig.</Text>
+      )}
+    </View>
+  );
 };
 
 export default ReviewsList;

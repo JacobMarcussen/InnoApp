@@ -129,6 +129,7 @@ const GlobalStyles = StyleSheet.create({
     zIndex: 1,
     alignSelf: "flex-start",
     marginLeft: 10,
+    marginTop: 40,
   },
   cardWrapper: {
     flex: 1,
@@ -146,6 +147,7 @@ const GlobalStyles = StyleSheet.create({
     width: "93%",
     marginBottom: 15,
     color: "#e0e0e0",
+    marginTop: 60,
   },
   containerWaitlist: {
     flex: 1,
@@ -201,7 +203,7 @@ const GlobalStyles = StyleSheet.create({
     padding: 12,
     marginBottom: 15,
     width: "100%",
-    color: "#e0e0e0",
+    color: "#fff",
     backgroundColor: "#222",
   },
   checkboxContainer: {
@@ -273,7 +275,6 @@ const GlobalStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     marginVertical: 10,
-    marginHorizontal: 20,
   },
   creatorText: {
     fontSize: 14,

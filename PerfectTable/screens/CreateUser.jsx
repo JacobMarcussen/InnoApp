@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, Alert, TouchableOpacity } from "react-na
 import { set, ref, get } from "firebase/database";
 import { database } from "../firebase";
 import GlobalStyles from "../GlobalStyles";
+import DropDownPicker from "react-native-dropdown-picker";
 
 // Komponent til at oprette en ny bruger
 const CreateUser = ({ navigation }) => {
@@ -12,8 +13,16 @@ const CreateUser = ({ navigation }) => {
   const [gender, setGender] = useState("");
   const [selectedCuisines, setSelectedCuisines] = useState([]);
   const [budget, setBudget] = useState("");
-
-  const cuisines = ["Italiensk", "Thailandsk", "Indisk", "Mexicansk", "Sushi"];
+  const [cuisineOpen, setCuisineOpen] = useState(false); // Controls whether the dropdown is open
+  const [cuisineItems, setCuisineItems] = useState([
+    { label: "Indisk", value: "Indisk" },
+    { label: "Thai", value: "Thai" },
+    { label: "Italiensk", value: "Italiensk" },
+    { label: "Kinesisk", value: "Kinesisk" },
+    { label: "Fine dining", value: "Fine dining" },
+    { label: "Dansk", value: "Dansk" },
+    { label: "Fransk", value: "Fransk" },
+  ]);
 
   const handleCreateUser = () => {
     // Tjekker om alle felter er udfyldt
@@ -65,70 +74,65 @@ const CreateUser = ({ navigation }) => {
       });
   };
 
-  // Funktion til at tilføje eller fjerne en kategori fra brugerens favoritter
-  const toggleCuisine = (cuisine) => {
-    if (selectedCuisines.includes(cuisine)) {
-      setSelectedCuisines(selectedCuisines.filter((item) => item !== cuisine));
-    } else {
-      setSelectedCuisines([...selectedCuisines, cuisine]);
-    }
-  };
-
   // Returnerer JSX komponent med inputfelter og knapper
   return (
     <View style={GlobalStyles.container}>
-      <Text style={GlobalStyles.title}>Opret Ny Bruger</Text>
+      <Text style={[GlobalStyles.title, { marginTop: 100 }]}>Opret Ny Bruger</Text>
 
-      <TextInput style={GlobalStyles.input} placeholder='Navn' value={name} onChangeText={setName} />
+      <TextInput style={GlobalStyles.input} placeholder='Navn' placeholderTextColor='#D3D3D3' value={name} onChangeText={setName} />
 
-      <TextInput style={GlobalStyles.input} placeholder='Email' value={email} onChangeText={setEmail} keyboardType='email-address' />
+      <TextInput style={GlobalStyles.input} placeholder='Email' placeholderTextColor='#D3D3D3' value={email} onChangeText={setEmail} keyboardType='email-address' />
 
-      <TextInput style={GlobalStyles.input} placeholder='Adgangskode' value={password} onChangeText={setPassword} secureTextEntry />
+      <TextInput style={GlobalStyles.input} placeholder='Adgangskode' placeholderTextColor='#D3D3D3' value={password} onChangeText={setPassword} secureTextEntry />
 
       <Text style={GlobalStyles.label}>Køn:</Text>
-      <View style={{ flexDirection: "row", marginBottom: 15 }}>
+      <View style={{ flexDirection: "row", marginBottom: 15, width: "94%", gap: 15 }}>
         {["Mand", "Kvinde"].map((item) => (
           <TouchableOpacity
             key={item}
             style={{
               ...GlobalStyles.button,
-              backgroundColor: gender === item ? "#FF4500" : "#ccc",
-              marginHorizontal: 5,
+              backgroundColor: gender === item ? "#FF4500" : "#121212",
+              width: "50%",
             }}
             onPress={() => setGender(item)}
           >
-            <Text style={{ color: gender === item ? "#fff" : "#000" }}>{item}</Text>
+            <Text style={{ color: "#fff" }}>{item}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <Text style={GlobalStyles.label}>Favorit Kategorier:</Text>
-      {cuisines.map((cuisine) => (
-        <TouchableOpacity key={cuisine} style={GlobalStyles.checkboxContainer} onPress={() => toggleCuisine(cuisine)}>
-          <View
-            style={{
-              width: 20,
-              height: 20,
-              borderColor: "#FF4500",
-              borderWidth: 2,
-              backgroundColor: selectedCuisines.includes(cuisine) ? "#FF4500" : "#fff",
-              marginRight: 10,
-              borderRadius: 3,
-            }}
-          />
-          <Text style={GlobalStyles.label}>{cuisine}</Text>
-        </TouchableOpacity>
-      ))}
+      <DropDownPicker
+        open={cuisineOpen}
+        value={selectedCuisines} // Bind selected cuisines
+        items={cuisineItems}
+        setOpen={setCuisineOpen}
+        setValue={setSelectedCuisines} // Updates selected cuisines
+        setItems={setCuisineItems}
+        multiple={true} // Enable multiple selection
+        mode='BADGE'
+        placeholder='Vælg Køkken(er)'
+        badgeColors='#FF4500'
+        badgeTextStyle={{ color: "#FFF" }}
+        textStyle={{ color: "#fff", fontWeight: "bold" }}
+        style={[GlobalStyles.dropdown, { width: "100%" }]}
+        zIndex={3000}
+        zIndexInverse={1000}
+        dropDownContainerStyle={[GlobalStyles.dropdownContainer, { width: "100%" }]}
+        listMode='SCROLLVIEW'
+        scrollViewProps={{ nestedScrollEnabled: true }}
+      />
 
       <Text style={GlobalStyles.label}>Budget:</Text>
-      <View style={{ flexDirection: "row", marginBottom: 15 }}>
+      <View style={{ flexDirection: "row", marginBottom: 15, width: "94%", gap: 15 }}>
         {["1", "2", "3"].map((item) => (
           <TouchableOpacity
             key={item}
             style={{
               ...GlobalStyles.button,
-              backgroundColor: budget === item ? "#FF4500" : "#ccc",
-              marginHorizontal: 5,
+              backgroundColor: budget === item ? "#FF4500" : "#121212",
+              width: "32%",
             }}
             onPress={() => setBudget(item)}
           >

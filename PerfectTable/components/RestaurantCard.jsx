@@ -15,8 +15,7 @@ const RestaurantCard = ({ id, name, cuisine, image, rating, address, postalcode,
 
       {/* Restaurant Badge */}
       {/* If waitlist is available, show a badge */}
-      <RestaurantBadge text={waitlist ? "Venteliste tilgængelig" : "Ingen venteliste"} />
-
+      {waitlist && <RestaurantBadge text={"Optjen point!"} />}
       <View style={GlobalStyles.resInfo}>
         {/* Restaurant Info */}
         {/* Combine address, postal code, and city properly */}

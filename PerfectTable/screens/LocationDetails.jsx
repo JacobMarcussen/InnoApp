@@ -21,11 +21,11 @@ const LocationDetails = ({ route }) => {
         {type} • {cuisine}
       </Text>
       <Text style={GlobalStyles.info}>
-        Address: {address}, {postalcode} {city}
+        Addresse: {address}, {postalcode} {city}
       </Text>
-      <Text style={GlobalStyles.info}>Price Class: {priceclass}</Text>
+      <Text style={GlobalStyles.info}>Pris klasse: {priceclass}</Text>
       <TouchableOpacity style={GlobalStyles.button} onPress={() => navigation.navigate("AddReview", { locationId: id })}>
-        <Text>Tilføj anmeldelse</Text>
+        <Text style={{ color: "#fff" }}>Tilføj anmeldelse</Text>
       </TouchableOpacity>
       <Text style={GlobalStyles.title}>Anmeldelser</Text>
       <ReviewsList locationId={id} />

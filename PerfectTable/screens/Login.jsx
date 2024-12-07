@@ -33,7 +33,6 @@ const Login = ({ navigation }) => {
             AsyncStorage.setItem("user", JSON.stringify(user))
               .then(() => {
                 login(user);
-                navigation.navigate("ProtectedScreen");
                 Alert.alert("Succes", "Logget ind med succes!");
               })
               .catch((error) => {
@@ -55,9 +54,9 @@ const Login = ({ navigation }) => {
     <View style={GlobalStyles.container}>
       <Text style={GlobalStyles.title}>Login</Text>
 
-      <TextInput style={GlobalStyles.input} placeholder='Email' value={email} onChangeText={setEmail} keyboardType='email-address' />
+      <TextInput style={GlobalStyles.input} placeholder='Email' value={email} placeholderTextColor='#D3D3D3' onChangeText={setEmail} keyboardType='email-address' />
 
-      <TextInput style={GlobalStyles.input} placeholder='Adgangskode' value={password} onChangeText={setPassword} secureTextEntry />
+      <TextInput style={GlobalStyles.input} placeholder='Adgangskode' value={password} placeholderTextColor='#D3D3D3' onChangeText={setPassword} secureTextEntry />
 
       <Button title='Login' onPress={handleLogin} color='#FF4500' />
 

@@ -5,7 +5,7 @@ import moment from "moment";
 
 const ReviewCard = ({ review, rating, timestamp, creator, imageUrl }) => {
   return (
-    <View style={GlobalStyles.card}>
+    <View style={[GlobalStyles.card, { width: "100%" }]}>
       <Text style={GlobalStyles.creatorText}>{creator}</Text>
       <Text style={GlobalStyles.reviewText}>{review}</Text>
       <Text style={GlobalStyles.ratingText}>Rating: {rating} / 5</Text>
