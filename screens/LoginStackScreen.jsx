@@ -5,6 +5,7 @@ import CreateUser from "./CreateUser";
 
 const LoginStack = createStackNavigator();
 
+// Stack navigator til at håndtere navigationen i Login og CreateUser, som menu punkt, hvis brugeren ikke er logget ind
 export default function LoginStackScreen() {
   return (
     <LoginStack.Navigator initialRouteName='Login'>

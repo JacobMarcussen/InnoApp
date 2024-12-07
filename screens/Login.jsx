@@ -6,11 +6,13 @@ import GlobalStyles from "../GlobalStyles";
 import { useAuth } from "../components/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Screen komponent til at logge ind
 const Login = ({ navigation }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Funktion til at håndtere login
   const handleLogin = () => {
     if (!email || !password) {
       Alert.alert("Fejl", "Udfyld venligst alle felter");
@@ -36,7 +38,7 @@ const Login = ({ navigation }) => {
                 Alert.alert("Succes", "Logget ind med succes!");
               })
               .catch((error) => {
-                console.error("Error saving user data:", error);
+                console.error("Fejl. Kan ikke gemme bruger:", error);
               });
           } else {
             Alert.alert("Fejl", "Ugyldig email eller adgangskode");
@@ -60,6 +62,7 @@ const Login = ({ navigation }) => {
 
       <Button title='Login' onPress={handleLogin} color='#FF4500' />
 
+      {/* Navigationsknap til CreateUser skærmen */}
       <TouchableOpacity onPress={() => navigation.navigate("CreateUser")} style={{ marginTop: 20 }}>
         <Text style={{ color: "#FF4500", textAlign: "center" }}>Har du ikke en bruger? Opret her</Text>
       </TouchableOpacity>

@@ -76,6 +76,7 @@ const Profile = () => {
               <Text style={GlobalStyles.label}>Adgangskode:</Text>
               <TextInput style={GlobalStyles.input} value={password} onChangeText={setPassword} placeholder='Password' secureTextEntry />
               <Text style={GlobalStyles.label}>Køkken (Cuisine):</Text>
+              {/* DropDownPicker komponent til at vælge køkken */}
               <DropDownPicker
                 open={cuisineOpen}
                 value={cuisines}
@@ -97,6 +98,7 @@ const Profile = () => {
                 scrollViewProps={{ nestedScrollEnabled: true }}
               />
               <Text style={GlobalStyles.label}>Budget:</Text>
+              {/* Viser knapper med $ til at vælge budget */}
               <View style={GlobalStyles.budgetContainer}>
                 {["1", "2", "3"].map((level) => (
                   <TouchableOpacity key={level} style={[GlobalStyles.budgetButton, budget === level && GlobalStyles.selectedBudgetButton]} onPress={() => setBudget(level)}>

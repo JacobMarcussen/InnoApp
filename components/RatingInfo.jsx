@@ -4,9 +4,17 @@ import GlobalStyles from "../GlobalStyles";
 import { ref, get, child } from "firebase/database";
 import { database } from "../firebase";
 
+// Komponent til at vise prisniveau og gennemsnitlig rating, igen med lidt misvisende navn
 const RatingInfo = ({ id, priceLevel }) => {
+  // State til anmeldelserne
   const [reviews, setReviews] = useState([]);
 
+  /**
+   * Bruger useEffect hook'en som kører, når komponenten renderes første gang, som
+   * Henter anmeldelser fra firebase databasen baseret på det givne id.
+   * Hvis der findes anmeldelser, konverteres de til et array og gemmes i state.
+   * Logger en fejlmeddelelse, hvis der opstår en fejl under hentning af data.
+   */
   useEffect(() => {
     const fetchReviews = () => {
       const dbRef = ref(database);
@@ -29,6 +37,7 @@ const RatingInfo = ({ id, priceLevel }) => {
     fetchReviews();
   }, []);
 
+  // Udregner gennemsnittet af anmeldelserne
   let ReviewsAvg = 0;
   reviews.forEach((review) => {
     ReviewsAvg += review.rating;
@@ -49,6 +58,7 @@ const RatingInfo = ({ id, priceLevel }) => {
     }
   };
 
+  // Returnerer jsx med prisniveau og gennemsnitlig rating
   return (
     <View style={GlobalStyles.ratingContainer}>
       <Text style={GlobalStyles.ratingText}>{getPriceLevel(priceLevel)}</Text>

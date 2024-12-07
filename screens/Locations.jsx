@@ -7,11 +7,12 @@ import { useNavigation } from "@react-navigation/native";
 import GlobalStyles from "../GlobalStyles";
 import Recomendations from "../components/Recomendation";
 
+// Screen komponent til at vise alle lokationer, samt overrask mig knap (Udforsk skærmen)
 const Locations = () => {
   const [locations, setLocations] = useState([]);
   const navigation = useNavigation();
 
-  // Fetching locations from Firebase
+  // Hennter lokationerne fra databasen med useEffects, så de bliver hentet når siden rendere og gemmer dem i state
   useEffect(() => {
     const fetchLocations = () => {
       const dbRef = ref(database);
@@ -25,11 +26,11 @@ const Locations = () => {
             }));
             setLocations(locationsArray);
           } else {
-            console.log("No locations data available");
+            console.log("Ingen lokationer fundet");
           }
         })
         .catch((error) => {
-          console.error("Error fetching data: ", error);
+          console.error("Fejl i hentning af data: ", error);
         });
     };
 
@@ -37,6 +38,7 @@ const Locations = () => {
   }, []);
 
   return (
+    // ScrollView til at scrolle gennem lokationerne
     <ScrollView style={{ backgroundColor: "#1e1e1e" }}>
       <View style={GlobalStyles.cardContainer}>
         <Text style={GlobalStyles.headline}>
@@ -44,6 +46,7 @@ const Locations = () => {
         </Text>
         {/* Indsætter "overrask mig" knap her */}
         <Recomendations locations={locations} />
+        {/* Map funktion til at vise alle lokationerne som RestaurantCard komponenter, wrappet i TouchableOpacity, så den er klikbar */}
         {locations.map((location) => (
           <TouchableOpacity
             key={location.id}
@@ -65,36 +68,6 @@ const Locations = () => {
             <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
           </TouchableOpacity>
         ))}
-        <StatusBar style='auto' />
-      </View>
-
-      <View style={GlobalStyles.containerWaitlist}>
-        <Text style={GlobalStyles.headline}>
-          Mulighed for <Text style={{ color: "#FF4500" }}>venteliste</Text>
-        </Text>
-        {locations
-          .filter((location) => location.waitlist)
-          .map((location) => (
-            <TouchableOpacity
-              key={location.id}
-              onPress={() =>
-                navigation.navigate("LocationDetails", {
-                  id: location.id,
-                  name: location.name,
-                  cuisine: location.cuisine,
-                  address: location.address,
-                  postalcode: location.postalcode,
-                  city: location.city,
-                  type: location.type,
-                  priceclass: location.priceclass,
-                  image: location.image,
-                })
-              }
-              style={GlobalStyles.cardWrapper}
-            >
-              <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
-            </TouchableOpacity>
-          ))}
         <StatusBar style='auto' />
       </View>
     </ScrollView>

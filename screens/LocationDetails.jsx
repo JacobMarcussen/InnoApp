@@ -5,12 +5,16 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import GlobalStyles from "../GlobalStyles";
 import ReviewsList from "../components/ReviewList";
 
+// Screen komponent til at vise detaljer om en lokation
 const LocationDetails = ({ route }) => {
+  // Bruger useNavigation hook'en til at hente navigation objektet, så vi kan navigere videre og tilbage
   const navigation = useNavigation();
+  // Henter data fra route.params
   const { name, cuisine, address, postalcode, city, type, priceclass, image, id } = route.params;
 
   return (
     <View style={GlobalStyles.container}>
+      {/* Tilbageknap */}
       <TouchableOpacity style={GlobalStyles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name='arrow-back' size={24} color='#fff' />
       </TouchableOpacity>

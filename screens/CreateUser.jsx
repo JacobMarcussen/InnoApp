@@ -3,9 +3,10 @@ import { View, Text, TextInput, Button, Alert, TouchableOpacity } from "react-na
 import { set, ref, get } from "firebase/database";
 import { database } from "../firebase";
 import GlobalStyles from "../GlobalStyles";
+// Bruger DropDownPicker komponenten til at vælge køkken
 import DropDownPicker from "react-native-dropdown-picker";
 
-// Komponent til at oprette en ny bruger
+// Screen komponent til at oprette en ny bruger
 const CreateUser = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ const CreateUser = ({ navigation }) => {
   const [gender, setGender] = useState("");
   const [selectedCuisines, setSelectedCuisines] = useState([]);
   const [budget, setBudget] = useState("");
-  const [cuisineOpen, setCuisineOpen] = useState(false); // Controls whether the dropdown is open
+  const [cuisineOpen, setCuisineOpen] = useState(false);
   const [cuisineItems, setCuisineItems] = useState([
     { label: "Indisk", value: "Indisk" },
     { label: "Thai", value: "Thai" },
@@ -37,7 +38,6 @@ const CreateUser = ({ navigation }) => {
     get(usersRef)
       .then((snapshot) => {
         let newUserId = 1;
-
         // Hvis der allerede er brugere i databasen, findes det højeste bruger-id og det næste ledige id beregnes
         if (snapshot.exists()) {
           const usersData = snapshot.val();
@@ -51,7 +51,7 @@ const CreateUser = ({ navigation }) => {
           id: newUserId,
           name,
           email,
-          password, // Bliver bliver ikke hashet i, da det blot er til test
+          password, // Bliver ikke hashet, da det blot er til fremhævning af yderligere funktioner og sikkerhed ikke er fokus
           gender,
           cuisines: selectedCuisines,
           budget,
@@ -103,14 +103,15 @@ const CreateUser = ({ navigation }) => {
       </View>
 
       <Text style={GlobalStyles.label}>Favorit Kategorier:</Text>
+      {/* DropDownPicker komponent til at vælge køkken */}
       <DropDownPicker
         open={cuisineOpen}
-        value={selectedCuisines} // Bind selected cuisines
+        value={selectedCuisines}
         items={cuisineItems}
         setOpen={setCuisineOpen}
-        setValue={setSelectedCuisines} // Updates selected cuisines
+        setValue={setSelectedCuisines}
         setItems={setCuisineItems}
-        multiple={true} // Enable multiple selection
+        multiple={true}
         mode='BADGE'
         placeholder='Vælg Køkken(er)'
         badgeColors='#FF4500'
@@ -143,7 +144,7 @@ const CreateUser = ({ navigation }) => {
 
       <Button title='Opret Bruger' onPress={handleCreateUser} color='#FF4500' />
 
-      {/* Button for existing users to login */}
+      {/* Knap til eksisterende brugere for at logge ind */}
       <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{ marginTop: 20 }}>
         <Text style={{ color: "#FF4500", textAlign: "center" }}>Har du allerede en bruger? Login her</Text>
       </TouchableOpacity>

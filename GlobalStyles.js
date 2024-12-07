@@ -1,3 +1,5 @@
+// Indeholder alt styling til alle komponenter i hele appen. For bedre overskuelighed kunne det være en god idé at opdele det i mindre stylesheets
+// og importere dem i de relevante komponenter. Dette er dog en mindre app, så vi fandt det ikke nødvendigt.
 import { StyleSheet } from "react-native";
 
 const GlobalStyles = StyleSheet.create({
@@ -36,6 +38,36 @@ const GlobalStyles = StyleSheet.create({
     marginTop: 5,
     gap: 10,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "93%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  recommendationText: {
+    fontSize: 16,
+    marginVertical: 5,
+  },
+  closeButton: {
+    backgroundColor: "#FF4500",
+    marginTop: 15,
+  },
   ratingText: {
     marginRight: 10,
     color: "#b0b0b0",
@@ -54,18 +86,6 @@ const GlobalStyles = StyleSheet.create({
     borderRadius: 8,
     width: "93%",
     borderColor: "#000",
-  },
-  redButton: {
-    backgroundColor: "#D64933",
-    borderBottomWidth: 4,
-    borderColor: "#A33B27",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  redButtonText: {
-    color: "white",
-    fontSize: 16,
   },
   badge: {
     backgroundColor: "#D64933",

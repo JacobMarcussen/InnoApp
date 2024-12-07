@@ -16,12 +16,15 @@ const ReviewsList = ({ locationId }) => {
     const unsubscribe = onValue(reviewsRef, async (snapshot) => {
       if (snapshot.exists()) {
         const reviewsData = snapshot.val();
+        // Konverterer data til et array
         const formattedReviews = Object.keys(reviewsData).map((key) => ({
           id: key,
           ...reviewsData[key],
         }));
+        // Henter brugerenes navne for hvert review
         const reviewsWithNames = await fetchCreatorNames(formattedReviews);
 
+        // Opdaterer state med reviews
         setReviews(reviewsWithNames);
       } else {
         setReviews([]);
@@ -31,6 +34,7 @@ const ReviewsList = ({ locationId }) => {
     return () => unsubscribe();
   }, [locationId]);
 
+  // Funktion til at hente brugernavne ud fra creator id'et for hvert review
   const fetchCreatorNames = async (reviews) => {
     return await Promise.all(
       reviews.map(async (review) => {
@@ -39,11 +43,14 @@ const ReviewsList = ({ locationId }) => {
           const userSnapshot = await get(userRef);
           if (userSnapshot.exists()) {
             const userData = userSnapshot.val();
+            // Returnerer et review med brugerens navn som creatorName
             return { ...review, creatorName: userData.name || "Ukendt" };
           }
         } catch (error) {
-          console.error("Error fetching user data:", error.message); // Log errors
+          // Logger en fejlmeddelelse, hvis der opstår en fejl under hentning af bruger data
+          console.error("Fejl i hentning af bruger data:", error.message);
         }
+        // Fallback til "Ukendt" hvis brugeren ikke findes
         return { ...review, creatorName: "Ukendt" };
       })
     );
@@ -56,17 +63,8 @@ const ReviewsList = ({ locationId }) => {
   return (
     <View style={[GlobalStyles.cardContainer, { width: "100%", alignItems: "center", backgroundColor: "#121212", paddingTop: 0 }]}>
       {reviews.length > 0 ? (
-        <FlatList
-          style={{ width: "100%" }} // Corrected width to take up the full width of the parent
-          contentContainerStyle={{ alignItems: "center" }} // Centers the list items
-          data={reviews}
-          renderItem={renderReview}
-          keyExtractor={(item) => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          snapToAlignment='center'
-        />
+        // Bruger flatlist til at vise reviews horisontalt
+        <FlatList style={{ width: "100%" }} contentContainerStyle={{ alignItems: "center" }} data={reviews} renderItem={renderReview} keyExtractor={(item) => item.id} horizontal pagingEnabled showsHorizontalScrollIndicator={false} snapToAlignment='center' />
       ) : (
         <Text>Ingen anmeldelser tilgængelig.</Text>
       )}

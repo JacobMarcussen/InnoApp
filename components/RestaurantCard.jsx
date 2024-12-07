@@ -6,26 +6,23 @@ import RatingInfo from "./RatingInfo";
 import DeliveryInfo from "./DeliveryInfo";
 import GlobalStyles from "../GlobalStyles";
 
-// RestaurantCard component
+// RestaurantCard komponent, som kombinerer mange af de andre komponenter og modtager en masse props fra parent
 const RestaurantCard = ({ id, name, cuisine, image, rating, address, postalcode, city, type, priceclass, waitlist }) => {
   return (
     <View style={GlobalStyles.resCard}>
-      {/* Restaurant Image */}
+      {/* Restaurant Billede */}
       <Image source={{ uri: image }} style={GlobalStyles.resImage} resizeMode='cover' />
 
-      {/* Restaurant Badge */}
-      {/* If waitlist is available, show a badge */}
+      {/* Hvis loyalitetsprogram(waitlist) er tilgængelig, vis et badge */}
       {waitlist && <RestaurantBadge text={"Optjen point!"} />}
       <View style={GlobalStyles.resInfo}>
-        {/* Restaurant Info */}
-        {/* Combine address, postal code, and city properly */}
+        {/* Kombiner adresse, postnummer og by korrekt */}
         <RestaurantInfo title={name} description={`${address || ""}, ${postalcode || ""} ${city || ""}`} />
 
-        {/* Rating and Pricing Info */}
+        {/* Gennemsnitsrating og prisklasse */}
         <RatingInfo priceLevel={priceclass} rating={rating} id={id} />
 
-        {/* Delivery Time */}
-        {/* Combine type and cuisine properly */}
+        {/* Kombiner type og køkken korrekt */}
         <DeliveryInfo time={`${type || ""} • ${cuisine || ""}`} />
       </View>
     </View>

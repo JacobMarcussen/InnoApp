@@ -1,81 +1,106 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "react-native-vector-icons";
 import GlobalStyles from "../GlobalStyles";
-import Config from "react-native-config";
-
-const API_KEY = Config.API_KEY;
 
 const MapSearch = () => {
+  // State til at holde alle lokationer og filtrerede lokationer
   const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
+  const [filteredLocations, setFilteredLocations] = useState([]);
 
-  // Henter locations fra AsyncStorage og geocoder dem, hvis de mangler koordinater
+  // State til at indikere, om data indlæses
+  const [loading, setLoading] = useState(true);
+
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  // Modtager lokationer og valgte byer fra route.params
+  const { locations: passedLocations, selectedCities } = route.params;
+
+  // Effekt: Håndterer geokodning og indlæsning af lokationer
   useEffect(() => {
     const geocodeLocations = async (locationsArray) => {
+      // Geokoder hver lokation, der mangler latitude/longitude
       const geocodedLocations = await Promise.all(
         locationsArray.map(async (location) => {
           if (!location.latitude || !location.longitude) {
-            const address = `${location.address}, ${location.postalcode}, Copenhagen`;
-            console.log("Attempting to geocode address:", address);
-            // Hent koordinater fra Google Maps Geocode API
+            const address = `${location.address}, ${location.postalcode}`;
             try {
-              const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-                params: {
-                  address: address,
-                  key: API_KEY,
-                },
-              });
-              console.log("Full Geocode API Response:", response.data);
-
-              if (response.data.results.length > 0) {
-                const { lat, lng } = response.data.results[0].geometry.location;
-                console.log("Geocoding successful:", { lat, lng });
-                return { ...location, latitude: lat, longitude: lng };
+              // Brug Expo Location til at geokode adresse
+              const geocodeResults = await Location.geocodeAsync(address);
+              if (geocodeResults.length > 0) {
+                const { latitude, longitude } = geocodeResults[0];
+                return { ...location, latitude, longitude };
               } else {
-                console.log("No results from geocoding for address:", address);
+                console.log("Ingen resultater fra geokodning for adresse:", address);
               }
             } catch (error) {
-              console.error("Error geocoding address:", address, error);
+              console.error("Fejl ved geokodning af adresse:", address, error);
             }
-          } else {
-            console.log("Coordinates already available for:", location.name);
           }
-          return location;
+          return location; // Returnerer lokationen som den er, hvis den allerede har koordinater
         })
       );
       return geocodedLocations;
     };
 
-    // Henter locations fra AsyncStorage
     const loadLocations = async () => {
-      setLoading(true);
       try {
-        const storedLocations = await AsyncStorage.getItem("markers");
-        let locationsArray = storedLocations ? JSON.parse(storedLocations) : [];
-
-        if (locationsArray.some((location) => !location.latitude || !location.longitude)) {
-          console.log("Some locations lack coordinates, starting geocoding...");
-          locationsArray = await geocodeLocations(locationsArray);
-          await AsyncStorage.setItem("markers", JSON.stringify(locationsArray));
+        // Hvis der ikke er nogen lokationer, returner en tom liste
+        if (!passedLocations || passedLocations.length === 0) {
+          console.log("Ingen lokationer sendt til MapSearch skærmen.");
+          setLocations([]);
+          setFilteredLocations([]);
+          setLoading(false);
+          return;
         }
-        // Opdaterer state med locations
-        setLocations(locationsArray);
+
+        // Geokoder lokationer, hvis nogen mangler koordinater
+        if (passedLocations.some((location) => !location.latitude || !location.longitude)) {
+          console.log("Nogle lokationer mangler koordinater, starter geokodning...");
+          const updatedLocations = await geocodeLocations(passedLocations);
+          setLocations(updatedLocations);
+        } else {
+          setLocations(passedLocations); // Sætter direkte, hvis alle lokationer allerede har koordinater
+        }
       } catch (error) {
-        console.error("Error loading markers from AsyncStorage:", error);
+        console.error("Fejl ved indlæsning af lokationer:", error);
+      } finally {
+        // Stopper indlæsning
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    loadLocations();
+    const requestPermissions = async () => {
+      // Anmoder om tilladelse til at bruge lokationstjenester
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Adgang nægtet", "Adgang til lokation kræves for at bruge denne funktion.");
+        setLoading(false); // Stopper indlæsning, hvis tilladelse nægtes
+      } else {
+        await loadLocations(); // Indlæser lokationer, hvis tilladelse gives
+      }
+    };
+
+    requestPermissions();
   }, []);
 
-  // Viser loading spinner, mens locations hentes
+  // Effekt: Filtrerer lokationer baseret på valgte byer
+  useEffect(() => {
+    if (selectedCities && selectedCities.length > 0) {
+      // Filtrerer kun lokationer, der matcher de valgte byer
+      const filtered = locations.filter((location) => selectedCities.includes(location.city));
+      setFilteredLocations(filtered);
+    } else {
+      // Viser alle lokationer, hvis der ikke er valgt nogen byer
+      setFilteredLocations(locations);
+    }
+  }, [locations, selectedCities]);
+
+  // Viser loading spinner, mens data indlæses
   if (loading) {
     return (
       <View style={GlobalStyles.loadingContainer}>
@@ -86,9 +111,12 @@ const MapSearch = () => {
 
   return (
     <View style={GlobalStyles.cardContainer}>
+      {/* Tilbage-knap */}
       <TouchableOpacity style={GlobalStyles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name='arrow-back' size={24} color='#fff' />
       </TouchableOpacity>
+
+      {/* MapView der viser lokationer */}
       <MapView
         style={GlobalStyles.map}
         initialRegion={{
@@ -98,8 +126,8 @@ const MapSearch = () => {
           longitudeDelta: 0.5,
         }}
       >
-        {/* Viser locations som Markers på kortet */}
-        {locations.map((location) => (
+        {/* Viser marker for hver filtreret lokation */}
+        {filteredLocations.map((location) => (
           <Marker
             key={location.id}
             coordinate={{
@@ -107,7 +135,7 @@ const MapSearch = () => {
               longitude: location.longitude,
             }}
             title={location.name}
-            description={`Address: ${location.address}\nCuisine: ${location.cuisine}\nPrice Class: ${location.priceclass}\nType: ${location.type}`}
+            description={`Adresse: ${location.address}\nKøkken: ${location.cuisine}\nPrisklasse: ${location.priceclass}\nType: ${location.type}`}
             onPress={() =>
               navigation.navigate("LocationDetails", {
                 name: location.name,
@@ -117,7 +145,7 @@ const MapSearch = () => {
                 city: location.city,
                 type: location.type,
                 priceclass: location.priceclass,
-                image: "https://picsum.photos/500/500",
+                image: location.image,
               })
             }
           />

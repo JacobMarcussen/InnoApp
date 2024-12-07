@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, TouchableOpacity, ScrollView, Modal, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, Alert, TouchableOpacity, ScrollView, Modal, ActivityIndicator } from "react-native";
 import { useAuth } from "./AuthContext";
 import GlobalStyles from "../GlobalStyles";
-import { database } from "../firebase";
-import { ref, set, update } from "firebase/database";
+// Bruger Expo Location til at hente brugerens placering
 import * as Location from "expo-location";
 import { OpenAI } from "openai";
+//Burger expo constants for at hente API nøgle fra app.json, da .env filer ikke understøttes i Expo
 import Constants from "expo-constants";
 
+// INDSÆT GPT API NØGLE HERUNDER: (AI_API_KEY="api_nøgle_her")
 const AI_API_KEY = Constants.expoConfig.extra.AI_API_KEY;
 
+// Opretter en instans af OpenAI med API nøglen
 const openai = new OpenAI({ apiKey: AI_API_KEY });
 
 const Recomendations = ({ locations }) => {
+  // Henter brugerens data fra AuthContext
   const { user } = useAuth();
 
+  // Funktion til at konvertere brugerens budget til en tekstværdi
   const convertBudget = (budget) => {
     switch (budget) {
       case "1":
@@ -28,11 +32,13 @@ const Recomendations = ({ locations }) => {
     }
   };
 
+  // Sætter brugerens data i et objekt med fallback-værdier, hvis brugerens data mangler
   const userData = {
     favoriteCuisines: user.cuisines || ["Italiensk", "Thai", "Fransk", "Dansk", "Indisk", "Kinesisk", "Fine dining"],
     priceLevel: convertBudget(user.budget),
   };
 
+  // State til at holde brugerens placering, anbefalinger, synlighed og indlæsningsstatus
   const [geoLocation, setGeoLocation] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,18 +46,19 @@ const Recomendations = ({ locations }) => {
 
   const fetchLocation = async () => {
     try {
-      // Request location permissions
+      // Forespørg brugeren om placeringstilladelse
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         Alert.alert("Placeringstilladelse nægtet", "Tillad venligst adgang til placering for at fortsætte.");
         return;
       }
 
-      // Get the current position
+      // Henter brugerens nuværende placering
       const geoLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
       });
 
+      // Opdaterer state med brugerens placering
       setGeoLocation({
         latitude: geoLocation.coords.latitude,
         longitude: geoLocation.coords.longitude,
@@ -61,18 +68,22 @@ const Recomendations = ({ locations }) => {
     }
   };
 
+  // Kører fetchLocation, når komponenten renderes første gang
   useEffect(() => {
     fetchLocation();
   }, []);
 
+  // Funktion som anbefalder en restaurant baseret på brugerens præferencer og placering med Open Ai's GPT-4o-mini
   const generateRecommendations = async () => {
     if (!geoLocation) {
       Alert.alert("Placering ikke fundet", "Vent venligst på, at placeringen indlæses.");
       return;
     }
-    setModalVisible(true); // Show the modal after fetching recommendations
+    // Sætter modalen til synlig og viser en spinner, imens anbefalingen hentes
+    setModalVisible(true);
     setLoading(true);
 
+    // Prompt til OpenAI's GPT-4o-mini model med brugerens data, placering og alle restuaranter fra databasen
     const prompt = `
     Brugerprofil:
     - Foretrukne køkkentyper: ${userData.favoriteCuisines.join(", ")}
@@ -95,6 +106,7 @@ const Recomendations = ({ locations }) => {
     Vælg den bedste lokation baseret på de tilgængelige spisesteder ud fra brugerprofilens præferencer og placeringen, og beskriv kort hvorfor den passer godt til brugeren.
     `;
 
+    // Sender anmodning til OpenAI's GPT-4o-mini model
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
@@ -102,6 +114,8 @@ const Recomendations = ({ locations }) => {
         max_tokens: 300,
       });
       const recommendationsData = response.choices[0].message?.content;
+
+      // Opdaterer state med anbefalingerne og fjerner tomme linjer
       setRecommendations(recommendationsData.split("\n").filter((line) => line.trim() !== ""));
     } catch (error) {
       console.error("Fejl ved hentning af anbefalinger:", error);
@@ -117,23 +131,24 @@ const Recomendations = ({ locations }) => {
         <Text style={GlobalStyles.buttonText}>Overrask mig!</Text>
       </TouchableOpacity>
 
-      {/* Modal for Recommendations */}
+      {/* Modal til anbefalingen */}
       <Modal visible={modalVisible} transparent={true} animationType='slide'>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+        <View style={GlobalStyles.modalContainer}>
+          <View style={GlobalStyles.modalContent}>
             {loading ? (
-              // Show a spinner while loading
-              <View style={styles.loadingContainer}>
+              // Visser en spinner under indlæsning af anbefaling
+              <View style={GlobalStyles.loadingContainer}>
                 <ActivityIndicator size='large' color='#FF4500' />
-                <Text style={styles.loadingText}>Indlæser overraskelse...</Text>
+                <Text style={GlobalStyles.loadingText}>Indlæser overraskelse...</Text>
               </View>
             ) : (
-              // Show recommendations after loading
+              // Viser anbefalingen, når den er hentet
               <>
-                <Text style={styles.modalTitle}>Dine Anbefaling</Text>
+                <Text style={GlobalStyles.modalTitle}>Dine Anbefaling</Text>
                 <ScrollView>
                   {recommendations.map((recommendation, index) => (
-                    <Text key={index} style={styles.recommendationText}>
+                    <Text key={index} style={GlobalStyles.recommendationText}>
+                      {/* Viser anbefaling, som den er hentet. Ulitmativt skulle den formateres pænere. */}
                       {recommendation}
                     </Text>
                   ))}
@@ -152,38 +167,5 @@ const Recomendations = ({ locations }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "93%",
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  recommendationText: {
-    fontSize: 16,
-    marginVertical: 5,
-  },
-  closeButton: {
-    backgroundColor: "#FF4500",
-    marginTop: 15,
-  },
-});
 
 export default Recomendations;

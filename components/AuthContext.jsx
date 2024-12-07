@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
-    // Gemmer brugerens data i AsyncStorage ved login
+    // Sætter bruger data og isAuthenticated state, til brug i resten af app'en
     setUser(userData);
     setIsAuthenticated(true);
   };
@@ -40,6 +40,6 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     await AsyncStorage.removeItem("user");
   };
-  // Giver "children" adgang til værdierne isAuthenticated, user, login og logout
+  // Giver underliggende "children" adgang til værdierne isAuthenticated, user, login og logout.
   return <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>{children}</AuthContext.Provider>;
 };

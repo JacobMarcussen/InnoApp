@@ -10,6 +10,7 @@ const Search = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
+  // State til at gemme valgte byer og tidspunkter
   const [selectedCities, setSelectedCities] = useState(route.params?.selectedCities || []);
   const [selectedTimes, setSelectedTimes] = useState(route.params?.selectedTimes || []);
   const [waitlistFilter, setWaitlistFilter] = useState(route.params?.waitlistFilter || false);
@@ -47,13 +48,15 @@ const Search = () => {
     fetchLocations();
   }, []);
 
+  // Navigér til MapSearch med de filtrede lokationer, hvis showMap er true
   useEffect(() => {
     if (showMap) {
-      navigation.navigate("MapSearch");
+      const filteredLocations = filterResults();
+      navigation.navigate("MapSearch", { locations: filteredLocations, selectedCities });
     }
   }, [showMap]);
 
-  // Filtrér resultater
+  // Filtrér resultater ud fra valgte byer, tidspunkter og loyalitets program (waitlist)
   const filterResults = () => {
     let filteredResults = locations;
 
@@ -93,12 +96,12 @@ const Search = () => {
           <Text style={GlobalStyles.buttonText}>Åbn Filtre</Text>
         </TouchableOpacity>
 
-        {/* Kortvisning Toggle */}
+        {/* Kortvisning toggle */}
         <TouchableOpacity style={[GlobalStyles.button]} onPress={() => setShowMap(!showMap)}>
           <Text style={GlobalStyles.buttonText}>{"Vis Kort"}</Text>
         </TouchableOpacity>
 
-        {/* Vis Kort eller Filterede Resultater */}
+        {/* Viser filterede resultater og sender resturant data med */}
         {filterResults().map((location) => (
           <TouchableOpacity
             key={location.id}

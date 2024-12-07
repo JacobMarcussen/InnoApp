@@ -13,6 +13,7 @@ const FilterScreen = ({ route }) => {
   const [cityValue, setCityValue] = useState(route.params?.selectedCities || []);
   const [timeValue, setTimeValue] = useState(route.params?.selectedTimes || []);
 
+  // Sætter byværdier og dropdown items
   const [cityOpen, setCityOpen] = useState(false);
   const [cityItems, setCityItems] = useState([
     { label: "København", value: "København" },
@@ -21,6 +22,7 @@ const FilterScreen = ({ route }) => {
     { label: "Roskilde", value: "Roskilde" },
   ]);
 
+  // Sætter tidsværdier og dropdown items
   const [timeOpen, setTimeOpen] = useState(false);
   const [timeItems, setTimeItems] = useState([
     { label: "17:00", value: "17:00" },
@@ -90,9 +92,9 @@ const FilterScreen = ({ route }) => {
         />
       </View>
 
-      {/* Venteliste Toggle */}
+      {/* Loyalitetsprogram toggle. Hedder venteliste, da det førhen var planen med funktionen */}
       <TouchableOpacity style={[GlobalStyles.button, waitlistFilter ? GlobalStyles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
-        <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Venteliste: Aktiv" : "Venteliste: Inaktiv"}</Text>
+        <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Loyalitetsprogram: Aktiv" : "Loyalitetsprogram: Alle"}</Text>
       </TouchableOpacity>
 
       {/* Anvend filtre knap */}

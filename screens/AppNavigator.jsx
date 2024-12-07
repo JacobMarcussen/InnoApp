@@ -1,3 +1,5 @@
+// AppNavigator viser screens afhængig af om brugeren er logget ind eller ej
+
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useAuth } from "../components/AuthContext";
@@ -16,6 +18,7 @@ const Tab = createBottomTabNavigator();
 const LocationsStack = createStackNavigator();
 const SearchStack = createStackNavigator();
 
+// Stack navigator til at håndtere navigationen i Locations (udforsk)
 function LocationsStackScreen() {
   return (
     <LocationsStack.Navigator initialRouteName='Locations'>
@@ -26,6 +29,7 @@ function LocationsStackScreen() {
   );
 }
 
+// Stack navigator til at håndtere navigationen i Søg
 function SearchStackScreen() {
   return (
     <SearchStack.Navigator initialRouteName='Filter'>
@@ -38,9 +42,11 @@ function SearchStackScreen() {
 }
 
 export default function AppNavigator() {
+  // Bruger useAuth hook'en til at hente isAuthenticated state
   const { isAuthenticated } = useAuth();
 
   return (
+    // Bottom tab navigator til at vise Udforsk, Søg og Profil screens og viser icon baseret på route navn
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
@@ -55,6 +61,7 @@ export default function AppNavigator() {
           fontSize: 12,
           paddingBottom: 0,
         },
+        // Viser forskellige ikoner baseret på route navn, så den aktive screen bliver highlightet
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -72,6 +79,7 @@ export default function AppNavigator() {
         },
       })}
     >
+      {/* Viser Udforsk, Søg og Profil screens, hvis brugeren er logget ind, ellers vises Søg og Login */}
       {isAuthenticated ? (
         <>
           <Tab.Screen name='Udforsk' component={LocationsStackScreen} options={{ headerShown: false }} />
