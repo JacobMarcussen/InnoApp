@@ -301,12 +301,21 @@ const GlobalStyles = StyleSheet.create({
     height: 100,
     marginTop: 10,
     borderRadius: 8,
+    marginBottom: 10,
   },
   reviewImage: {
     width: "100%",
     height: 200,
     borderRadius: 8,
     marginTop: 10,
+  },
+  topRightImage: {
+    width: 30,
+    height: 30,
+    position: "absolute",
+    top: 0,
+    right: 0,
+    borderRadius: 5,
   },
 });
 

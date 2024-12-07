@@ -24,10 +24,13 @@ const LocationDetails = ({ route }) => {
         Addresse: {address}, {postalcode} {city}
       </Text>
       <Text style={GlobalStyles.info}>Pris klasse: {priceclass}</Text>
-      <TouchableOpacity style={GlobalStyles.button} onPress={() => navigation.navigate("AddReview", { locationId: id })}>
+      <TouchableOpacity style={[GlobalStyles.button, { width: "100%", backgroundColor: "#FF4500" }]}>
+        <Text style={{ color: "#fff" }}>Book bord</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[GlobalStyles.button, { width: "100%" }]} onPress={() => navigation.navigate("AddReview", { locationId: id })}>
         <Text style={{ color: "#fff" }}>Tilføj anmeldelse</Text>
       </TouchableOpacity>
-      <Text style={GlobalStyles.title}>Anmeldelser</Text>
+      <Text style={[GlobalStyles.title, { marginBottom: 0, marginTop: 10 }]}>Anmeldelser</Text>
       <ReviewsList locationId={id} />
     </View>
   );
