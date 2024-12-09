@@ -10,13 +10,14 @@ const Search = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  // State til at gemme valgte byer og tidspunkter
+  // State til at gemme valgte byer, tidspunkter og prisklasser
   const [selectedCities, setSelectedCities] = useState(route.params?.selectedCities || []);
   const [selectedTimes, setSelectedTimes] = useState(route.params?.selectedTimes || []);
   const [waitlistFilter, setWaitlistFilter] = useState(route.params?.waitlistFilter || false);
   const [locations, setLocations] = useState([]);
   const [showMap, setShowMap] = useState(false);
 
+  // Opdater state med valgte byer, tidspunkter og loyalitetsprogram (waitlist)
   useEffect(() => {
     if (route.params?.selectedCities) setSelectedCities(route.params.selectedCities);
     if (route.params?.selectedTimes) setSelectedTimes(route.params.selectedTimes);
@@ -56,7 +57,7 @@ const Search = () => {
     }
   }, [showMap]);
 
-  // Filtrér resultater ud fra valgte byer, tidspunkter og loyalitets program (waitlist)
+  // Filtrér resultater ud fra valgte byer, tidspunkter, loyalitetsprogram (waitlist) og prisklasse
   const filterResults = () => {
     let filteredResults = locations;
 
@@ -65,11 +66,16 @@ const Search = () => {
     }
 
     if (selectedTimes.length > 0) {
-      filteredResults = filteredResults.filter((location) => selectedTimes.some((time) => location.times[time]));
+      filteredResults = filteredResults.filter((location) => selectedTimes.some((time) => location.times && location.times[time]));
     }
 
     if (waitlistFilter) {
       filteredResults = filteredResults.filter((location) => location.waitlist);
+    }
+
+    if (route.params?.selectedPrice && route.params.selectedPrice.length > 0) {
+      const selectedPrice = route.params.selectedPrice;
+      filteredResults = filteredResults.filter((location) => selectedPrice.includes(location.priceclass));
     }
 
     return filteredResults;
@@ -90,6 +96,7 @@ const Search = () => {
               selectedCities,
               selectedTimes,
               waitlistFilter,
+              selectedPrice: route.params?.selectedPrice || [],
             })
           }
         >
@@ -101,7 +108,7 @@ const Search = () => {
           <Text style={GlobalStyles.buttonText}>{"Vis Kort"}</Text>
         </TouchableOpacity>
 
-        {/* Viser filterede resultater og sender resturant data med */}
+        {/* Viser filterede resultater og sender restaurant data med */}
         {filterResults().map((location) => (
           <TouchableOpacity
             key={location.id}
@@ -120,7 +127,20 @@ const Search = () => {
             }
             style={GlobalStyles.cardWrapper}
           >
-            <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} rating='5' address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
+            <RestaurantCard
+              times={location.times}
+              id={location.id}
+              name={location.name}
+              cuisine={location.cuisine}
+              image={location.image}
+              rating='5'
+              address={location.address}
+              postalcode={location.postalcode}
+              city={location.city}
+              type={location.type}
+              priceclass={location.priceclass}
+              waitlist={location.waitlist}
+            />
           </TouchableOpacity>
         ))}
 

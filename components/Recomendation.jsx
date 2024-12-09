@@ -40,7 +40,7 @@ const Recomendations = ({ locations }) => {
 
   // State til at holde brugerens placering, anbefalinger, synlighed og indlæsningsstatus
   const [geoLocation, setGeoLocation] = useState(null);
-  const [recommendations, setRecommendations] = useState([]);
+  const [recommendations, setRecommendations] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -85,38 +85,51 @@ const Recomendations = ({ locations }) => {
 
     // Prompt til OpenAI's GPT-4o-mini model med brugerens data, placering og alle restuaranter fra databasen
     const prompt = `
-    Brugerprofil:
-    - Foretrukne køkkentyper: ${userData.favoriteCuisines.join(", ")}
-    - Prisniveau: ${userData.priceLevel}
-    - Brugerens nuværende placering: Latitude ${geoLocation.latitude}, Longitude ${geoLocation.longitude}
-    - Tilgængelige spisesteder:
-    ${locations
-      .map(
-        (location) => `
-      - Navn: ${location.name}
-        Køkken: ${location.cuisine}
-        Adresse: ${location.address}
-        Postnummer: ${location.postalcode}
-        By: ${location.city}
-        Type: ${location.type}
-        Prisniveau: ${location.priceclass}`
-      )
-      .join("\n")}
+      Brugerprofil:
+      - Foretrukne køkkentyper: ${userData.favoriteCuisines.join(", ")}
+      - Prisniveau: ${userData.priceLevel}
+      - Brugerens nuværende placering: Latitude ${geoLocation.latitude}, Longitude ${geoLocation.longitude}
+      - Tilgængelige spisesteder:
+      ${locations
+        .map(
+          (location) => `
+        - Navn: ${location.name}
+          Køkken: ${location.cuisine}
+          Adresse: ${location.address}
+          Postnummer: ${location.postalcode}
+          By: ${location.city}
+          Type: ${location.type}
+          Prisniveau: ${location.priceclass}`
+        )
+        .join("\n")}
 
-    Vælg den bedste lokation baseret på de tilgængelige spisesteder ud fra brugerprofilens præferencer og placeringen, og beskriv kort hvorfor den passer godt til brugeren.
+      Ud fra ovenstående data, vælg den bedste lokation baseret på brugerprofilens præferencer og placeringen, og returnér resultatet i følgende JSON-format uden ekstra formatteing eller markdown:
+
+      {
+        "name": "Restaurantens navn",
+        "cuisine": "Køkken",
+        "address": "Adresse",
+        "postalcode": "Postnummer",
+        "city": "By",
+        "type": "Type",
+        "priceclass": "Prisniveau",
+        "reason": "Hvorfor passer denne lokation godt til brugeren"
+      }
     `;
 
     // Sender anmodning til OpenAI's GPT-4o-mini model
     try {
       const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 300,
       });
-      const recommendationsData = response.choices[0].message?.content;
+      let recommendationsData = response.choices[0].message?.content;
+      recommendationsData = recommendationsData.replace(/```/g, "").trim();
+      const recommendationsJSON = JSON.parse(recommendationsData);
 
-      // Opdaterer state med anbefalingerne og fjerner tomme linjer
-      setRecommendations(recommendationsData.split("\n").filter((line) => line.trim() !== ""));
+      // Opdaterer state med anbefalingen
+      setRecommendations(recommendationsJSON);
     } catch (error) {
       console.error("Fejl ved hentning af anbefalinger:", error);
       Alert.alert("Fejl", "Kunne ikke hente anbefalinger.");
@@ -144,16 +157,20 @@ const Recomendations = ({ locations }) => {
             ) : (
               // Viser anbefalingen, når den er hentet
               <>
-                <Text style={GlobalStyles.modalTitle}>Dine Anbefaling</Text>
                 <ScrollView>
-                  {recommendations.map((recommendation, index) => (
-                    <Text key={index} style={GlobalStyles.recommendationText}>
-                      {/* Viser anbefaling, som den er hentet. Ulitmativt skulle den formateres pænere. */}
-                      {recommendation}
+                  <Text style={[GlobalStyles.title, { marginTop: 10 }]}>{recommendations.name}</Text>
+                  <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", marginBottom: 10 }}>
+                    <Text style={[GlobalStyles.resBadge]}>
+                      {recommendations.address}, {recommendations.city}
                     </Text>
-                  ))}
+                    <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                      <Text style={GlobalStyles.resBadge}>{recommendations.cuisine}</Text>
+                      <Text style={GlobalStyles.resBadge}>$: {recommendations.priceclass}</Text>
+                    </View>
+                  </View>
+                  <Text style={{ color: "white" }}>{recommendations.reason}</Text>
                 </ScrollView>
-                <TouchableOpacity style={[GlobalStyles.button, { backgroundColor: "#FF4500", width: "100%" }]}>
+                <TouchableOpacity style={[GlobalStyles.button, { backgroundColor: "#FF4500", width: "100%", marginTop: 35 }]}>
                   <Text style={{ color: "#fff", textAlign: "center" }}>Book bord</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[GlobalStyles.button, { width: "100%" }]} onPress={() => setModalVisible(false)}>

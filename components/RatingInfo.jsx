@@ -42,7 +42,7 @@ const RatingInfo = ({ id, priceLevel }) => {
   reviews.forEach((review) => {
     ReviewsAvg += review.rating;
   });
-  ReviewsAvg = ReviewsAvg / reviews.length;
+  ReviewsAvg = (ReviewsAvg / reviews.length).toFixed(2);
 
   // Funktion til at bestemme antal dollar-tegn baseret på prisniveau
   const getPriceLevel = (level) => {

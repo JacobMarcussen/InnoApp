@@ -65,7 +65,19 @@ const Locations = () => {
             }
             style={GlobalStyles.cardWrapper}
           >
-            <RestaurantCard id={location.id} name={location.name} cuisine={location.cuisine} image={location.image} address={location.address} postalcode={location.postalcode} city={location.city} type={location.type} priceclass={location.priceclass} waitlist={location.waitlist} />
+            <RestaurantCard
+              id={location.id}
+              name={location.name}
+              cuisine={location.cuisine}
+              image={location.image}
+              address={location.address}
+              postalcode={location.postalcode}
+              city={location.city}
+              type={location.type}
+              priceclass={location.priceclass}
+              waitlist={location.waitlist}
+              times={location.times}
+            />
           </TouchableOpacity>
         ))}
         <StatusBar style='auto' />

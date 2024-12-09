@@ -1,10 +1,8 @@
-// FilterScreen.js
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import GlobalStyles from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
 const FilterScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -12,8 +10,10 @@ const FilterScreen = ({ route }) => {
   // Hent eksisterende værdier fra route params, eller sæt dem til tomme arrays
   const [cityValue, setCityValue] = useState(route.params?.selectedCities || []);
   const [timeValue, setTimeValue] = useState(route.params?.selectedTimes || []);
+  const [priceValue, setPriceValue] = useState(route.params?.selectedPrice || []); // Tilføjet til prisklasse
+  const [waitlistFilter, setWaitlistFilter] = useState(route.params?.waitlistFilter || false);
 
-  // Sætter byværdier og dropdown items
+  // Sætter dropdowns
   const [cityOpen, setCityOpen] = useState(false);
   const [cityItems, setCityItems] = useState([
     { label: "København", value: "København" },
@@ -22,7 +22,6 @@ const FilterScreen = ({ route }) => {
     { label: "Roskilde", value: "Roskilde" },
   ]);
 
-  // Sætter tidsværdier og dropdown items
   const [timeOpen, setTimeOpen] = useState(false);
   const [timeItems, setTimeItems] = useState([
     { label: "17:00", value: "17:00" },
@@ -32,13 +31,19 @@ const FilterScreen = ({ route }) => {
     { label: "21:00", value: "21:00" },
   ]);
 
-  const [waitlistFilter, setWaitlistFilter] = useState(route.params?.waitlistFilter || false);
+  const [priceOpen, setPriceOpen] = useState(false);
+  const [priceItems, setPriceItems] = useState([
+    { label: "Lav", value: "Low" },
+    { label: "Mellem", value: "Medium" },
+    { label: "Høj", value: "High" },
+  ]);
 
   // Gem filtervalg og gå tilbage til søgningsskærmen
   const applyFilters = () => {
     navigation.navigate("Search", {
       selectedCities: cityValue,
       selectedTimes: timeValue,
+      selectedPrice: priceValue,
       waitlistFilter,
     });
   };
@@ -48,6 +53,7 @@ const FilterScreen = ({ route }) => {
       <Text style={GlobalStyles.headline}>
         Find dit næste <Text style={{ color: "#FF4500" }}>spisested</Text>
       </Text>
+
       {/* Byvalg Multiselect Dropdown */}
       <View style={{ zIndex: 3000 }}>
         <DropDownPicker
@@ -92,9 +98,31 @@ const FilterScreen = ({ route }) => {
         />
       </View>
 
-      {/* Loyalitetsprogram toggle. Hedder venteliste, da det førhen var planen med funktionen */}
+      {/* Prisklasse Dropdown */}
+      <View style={{ zIndex: 1000, marginBottom: priceOpen ? 160 : 10 }}>
+        <DropDownPicker
+          open={priceOpen}
+          value={priceValue}
+          items={priceItems}
+          setOpen={setPriceOpen}
+          setValue={setPriceValue}
+          setItems={setPriceItems}
+          multiple={true}
+          mode='BADGE'
+          placeholder='Vælg Prisklasse'
+          badgeColors='#FF4500'
+          badgeTextStyle={{ color: "#FFF" }}
+          textStyle={{ color: "#fff", fontWeight: "bold" }}
+          style={GlobalStyles.dropdown}
+          dropDownContainerStyle={GlobalStyles.dropdownContainer}
+          listMode='SCROLLVIEW'
+          scrollViewProps={{ nestedScrollEnabled: true }}
+        />
+      </View>
+
+      {/* Loyalitetsprogram toggle */}
       <TouchableOpacity style={[GlobalStyles.button, waitlistFilter ? GlobalStyles.activeButton : null]} onPress={() => setWaitlistFilter(!waitlistFilter)}>
-        <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Loyalitetsprogram: Aktiv" : "Loyalitetsprogram: Alle"}</Text>
+        <Text style={GlobalStyles.buttonText}>{waitlistFilter ? "Vis kun restauranter med loyalitetsprogram" : "Vis alle restauranter"}</Text>
       </TouchableOpacity>
 
       {/* Anvend filtre knap */}

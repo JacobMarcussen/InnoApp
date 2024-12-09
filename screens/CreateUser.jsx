@@ -64,6 +64,7 @@ const CreateUser = ({ navigation }) => {
             setGender("");
             setSelectedCuisines([]);
             setBudget("");
+            navigation.navigate("Login");
           })
           .catch((error) => {
             Alert.alert("Fejl", "Fejl under oprettelse af bruger: " + error.message);
@@ -81,7 +82,7 @@ const CreateUser = ({ navigation }) => {
 
       <TextInput style={GlobalStyles.input} placeholder='Navn' placeholderTextColor='#D3D3D3' value={name} onChangeText={setName} />
 
-      <TextInput style={GlobalStyles.input} placeholder='Email' placeholderTextColor='#D3D3D3' value={email} onChangeText={setEmail} keyboardType='email-address' />
+      <TextInput style={GlobalStyles.input} placeholder='Email' placeholderTextColor='#D3D3D3' value={email} onChangeText={(text) => setEmail(text.toLowerCase())} keyboardType='email-address' autoCapitalize='none' />
 
       <TextInput style={GlobalStyles.input} placeholder='Adgangskode' placeholderTextColor='#D3D3D3' value={password} onChangeText={setPassword} secureTextEntry />
 

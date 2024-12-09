@@ -23,27 +23,30 @@ const MapSearch = () => {
   // Effekt: Håndterer geokodning og indlæsning af lokationer
   useEffect(() => {
     const geocodeLocations = async (locationsArray) => {
-      // Geokoder hver lokation, der mangler latitude/longitude
-      const geocodedLocations = await Promise.all(
-        locationsArray.map(async (location) => {
-          if (!location.latitude || !location.longitude) {
-            const address = `${location.address}, ${location.postalcode}`;
-            try {
-              // Brug Expo Location til at geokode adresse
-              const geocodeResults = await Location.geocodeAsync(address);
-              if (geocodeResults.length > 0) {
-                const { latitude, longitude } = geocodeResults[0];
-                return { ...location, latitude, longitude };
-              } else {
-                console.log("Ingen resultater fra geokodning for adresse:", address);
-              }
-            } catch (error) {
-              console.error("Fejl ved geokodning af adresse:", address, error);
+      const geocodedLocations = [];
+
+      for (const location of locationsArray) {
+        if (!location.latitude || !location.longitude) {
+          const address = `${location.address}, ${location.postalcode}`;
+          try {
+            const geocodeResults = await Location.geocodeAsync(address);
+            if (geocodeResults.length > 0) {
+              const { latitude, longitude } = geocodeResults[0];
+              geocodedLocations.push({ ...location, latitude, longitude });
+            } else {
+              console.log("Ingen resultater fra geokodning for adresse:", address);
             }
+          } catch (error) {
+            console.error("Fejl ved geokodning af adresse:", address, error);
           }
-          return location; // Returnerer lokationen som den er, hvis den allerede har koordinater
-        })
-      );
+
+          // Sætter delay, så vi ikke overskrider geokodningsgrænser
+          await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms
+        } else {
+          geocodedLocations.push(location);
+        }
+      }
+
       return geocodedLocations;
     };
 
@@ -122,8 +125,8 @@ const MapSearch = () => {
         initialRegion={{
           latitude: 55.6761,
           longitude: 12.5683,
-          latitudeDelta: 0.5,
-          longitudeDelta: 0.5,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
         }}
       >
         {/* Viser marker for hver filtreret lokation */}

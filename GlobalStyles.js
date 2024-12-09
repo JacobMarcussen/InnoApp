@@ -46,7 +46,7 @@ const GlobalStyles = StyleSheet.create({
   },
   modalContent: {
     width: "93%",
-    backgroundColor: "white",
+    backgroundColor: "#121212",
     borderRadius: 10,
     padding: 20,
     shadowColor: "#000",
@@ -100,6 +100,13 @@ const GlobalStyles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
   },
+  resBadge: {
+    backgroundColor: "#FF4500",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    margin: 5,
+    borderRadius: 5,
+  },
   resCard: {
     flex: 1,
     backgroundColor: "#1e1e1e",
@@ -137,7 +144,13 @@ const GlobalStyles = StyleSheet.create({
     marginTop: 5,
   },
   map: { width: "100%", height: "100%" },
-  loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#121212",
+    padding: 20,
+  },
   backButton: {
     width: 40,
     height: 40,
