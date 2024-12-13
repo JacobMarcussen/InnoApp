@@ -49,6 +49,7 @@ Følg disse trin for at installere og køre PerfectTable:
    ```bash
    npm install
    ```
+   OBS: Brug nyeste npm version for at undgå fejl.
    
 3. **Opsæt udviklingsmøljø | API NØGLE!**:
    - Opret filen app.json i root
