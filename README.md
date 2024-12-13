@@ -1,6 +1,8 @@
 
 # PerfectTable
 
+REPO: https://github.com/JacobMarcussen/PerfectTable
+
 **PerfectTable** er en mobilapplikation, der hjælper brugere med at finde og anmelde restauranter. Brugere kan søge efter restauranter baseret på forskellige kriterier, se detaljer, tilføje anmeldelser og få personlige anbefalinger baseret på deres præferencer og placering.
 
 ---
